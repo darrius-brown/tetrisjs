@@ -1,0 +1,41 @@
+Game board is array or arrays
+
+[
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]   
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+[0,0,0,0,0,0,0,0,0,0,0]
+]
+
+Movement
+    Idle movement of pieces
+        We have to check whats under our piece
+
+
+    Rotations
+
+    Left & Right
+    
+    Straight Down
+
+Game Function
+
+    Row clear
+
+    Spawning pieces
+    
+    Cycling through pieces
+
+
+
+    

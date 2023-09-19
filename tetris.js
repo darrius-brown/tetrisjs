@@ -27,7 +27,11 @@ const dropPiece = (piece) => {
     board[3] = piece[3]
 }
 
-const idlePieceMovement = () => {
-    
+const idlePieceMovement = (board) => {
+    result = board.filter(findPiece)
+    const findPiece = () => {
+        return board.contains(2)
+    }
+    //Return the indexes of board where 2s live
 }
 

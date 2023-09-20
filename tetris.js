@@ -32,6 +32,7 @@ const idlePieceMovement = (board) => {
     const findPiece = () => {
         return board.contains(2)
     }
+    console.log(result)
     //Return the indexes of board where 2s live
 }
 

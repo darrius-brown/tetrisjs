@@ -15,30 +15,57 @@ board = [
     [0,0,0,0,0,0,0,0,0,0,0]
     ]
 
+const printBoard = () => {
+    for(i = 0; i < board.length; i++) {
+        console.log(board[i] + i)
+    }
+}
+
 l_piece =   [[0,0,0,0,0,2,0,0,0,0,0],
-            [0,0,0,0,0,2,0,0,0,0,0],
             [0,0,0,0,0,2,0,0,0,0,0],
             [0,0,0,0,0,2,2,0,0,0,0]]
 
 const dropPiece = (piece) => {
-    board[0] = piece[0]
-    board[1] = piece[1]
-    board[2] = piece[2]
-    board[3] = piece[3]
+    for (i = 0; i < piece.length; i++) {
+        board[i] = piece[i]
+    }
 }
 
 const idlePieceMovement = () => {
-    const findPiece = () => {
-        for(i = 0; i <= board.length; i++) {
+    const findStartPiece = () => {
+        for(i = 0; i < board.length; i++) {
             result = board[i].includes(2)
-            console.log('includes 2:' + result)
-        }
-        
+            if (result === true) {
+                return i
+            }
+        } 
     }
-    result = board.filter(findPiece)
-    console.log(result)
-    //Return the indexes of board where 2s live
+
+    const findEndPiece = () => {
+        for(i = board.length - 1; i > 0; i--) {
+            result = board[i].includes(2)
+            if (result === true) {
+                return i
+            }
+        } 
+    }
+
+    let topPiece = findStartPiece()
+    let endPiece = findEndPiece()
+
+    for (i = endPiece ; i >= topPiece; i--) {
+        board[i + 1] = board[i]
+    }
+
+    board[topPiece] = [0,0,0,0,0,0,0,0,0,0,0]
+ 
 }
 
+
+
 dropPiece(l_piece)
-idlePieceMovement(board)
+printBoard()
+idlePieceMovement()
+printBoard()
+
+

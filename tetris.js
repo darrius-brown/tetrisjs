@@ -25,6 +25,9 @@ l_piece =[[0,0,0,0,2,0,0,0,0,0],
           [0,0,0,0,2,0,0,0,0,0],
           [0,0,0,0,2,2,0,0,0,0]]
 
+let topPiece
+let endPiece
+
 const printBoard = () => {
     for(i = 0; i < board.length; i++) {
         console.log(board[i] + i)
@@ -54,10 +57,11 @@ const findEndPiece = () => {
         }
     } 
 }
+
 const idlePieceMovement = () => {
     
-    let topPiece = findStartPiece()
-    let endPiece = findEndPiece()
+    topPiece = findStartPiece()
+    endPiece = findEndPiece()
 
     for (i = endPiece ; i >= topPiece; i--) {
         board[i + 1] = board[i]
@@ -67,6 +71,11 @@ const idlePieceMovement = () => {
  
 }
 
-const rotatePiece = () => {
-
+const moveRight = () => {
+    for (i = endPiece ; i >= topPiece; i--) {
+        board[i] = board[i]
+    }
 }
+// const rotatePiece = () => {
+
+// }

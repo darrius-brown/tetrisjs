@@ -25,12 +25,14 @@ l_piece =[[0,0,0,0,2,0,0,0,0,0],
           [0,0,0,0,2,0,0,0,0,0],
           [0,0,0,0,2,2,0,0,0,0]]
 
+const leftEdge = 0
+const rightEdge = board[0].length - 1
 let topPiece
 let endPiece
 let checkLeftEdge = []
 let checkRightEdge = []
-let leftEdge = 0
-let rightEdge = board[0].length - 1
+let piecePosition = []
+
 const printBoard = () => {
     for(i = 0; i < board.length; i++) {
         console.log(board[i] + i)
@@ -73,7 +75,6 @@ const idlePieceMovement = () => {
     }
 
     board[topPiece] = [0,0,0,0,0,0,0,0,0,0,0]
- 
 }
 
 const moveLeft = () => {
@@ -113,14 +114,5 @@ const moveRight = () => {
         board[i].unshift(0)
     }
 }
-// const rotatePiece = () => {
 
-// }
 
-spawnPiece(l_piece)
-moveRight()
-moveRight()
-moveRight()
-moveRight()
-moveRight()
-moveRight()

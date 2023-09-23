@@ -18,12 +18,13 @@ board = [
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]
     ]
 
-l_piece =[[0,0,0,0,2,0,0,0,0,0],
-          [0,0,0,0,2,0,0,0,0,0],
-          [0,0,0,0,2,2,0,0,0,0]]
+l_piece = [  [0,2,0,0],
+             [0,2,0,0],
+             [0,2,2,0],
+             [0,0,0,0]]
 
 const leftEdge = 0
 const rightEdge = board[0].length - 1
@@ -45,6 +46,7 @@ const spawnPiece = (piece) => {
     }
     topPiece = findStartPiece()
     endPiece = findEndPiece()
+    printBoard()
 }
 
 const findStartPiece = () => {
@@ -75,6 +77,7 @@ const idlePieceMovement = () => {
     }
 
     board[topPiece] = [0,0,0,0,0,0,0,0,0,0,0]
+    printBoard()
 }
 
 const moveLeft = () => {
@@ -113,6 +116,25 @@ const moveRight = () => {
         board[i].pop()
         board[i].unshift(0)
     }
+    printBoard()
 }
 
+function rotatePiece() {
+    for (i = endPiece ; i >= topPiece; i--) {
+        piecePosition.unshift(board[i])
+    }
+    
+    let transposedPiece = piecePosition[0].map((_, colIndex) => piecePosition.map(row => row[colIndex]));
+    piecePosition = []
+    let rotatedPiece = transposedPiece.map(row => row.reverse());
+    
+    console.log('t piece' + transposedPiece)
+    console.log('r piece' +rotatedPiece)
+}
+
+spawnPiece(l_piece)
+moveLeft()
+moveLeft()
+idlePieceMovement()
+idlePieceMovement()
 

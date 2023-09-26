@@ -77,8 +77,19 @@ const left = () => {
     draw(l_piece, true)
 }
 
+const rotate = (piece) => {
+    draw(blank_piece, false)
+    
+    let transposedPiece = piece[0].map((_, colIndex) => piece.map(row => row[colIndex]));
+    piecePosition = []
+    let rotatedPiece = transposedPiece.map(row => row.reverse());
+    
+    draw(rotatedPiece, true)
+}
+
 draw(l_piece, true);
-down();
-down();
-right()
-left()
+// down();
+// down();
+// right();
+// left();
+rotate(l_piece);

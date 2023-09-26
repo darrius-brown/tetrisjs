@@ -21,9 +21,9 @@ board = [
     [0,0,0,0,0,0,0,0,0,0]
     ];
 
-l_piece = [ [0,2,0,0],
-            [0,2,0,0],
-            [0,2,2,0],
+l_piece = [ [0,-2,0,0],
+            [0,-2,0,0],
+            [0,-2,2,0],
             [0,0,0,0]];
 
 const blank_piece = [   [0,0,0,0],
@@ -39,7 +39,7 @@ let startY = coors[1];
 let endY = startY + 4;
 const printBoard = () => {
     for (const index in board) {
-        console.log(board[index] + index);
+        console.log(board[index] + "       index" + index);
     }
 }
 
@@ -66,12 +66,24 @@ const down = () => {
 }
 
 const right = () => {  
+    for (let i = 0; i < board.length; i++) {
+        if (board[i][9] < 0) {
+         console.log('Action not possible')
+         return
+        } 
+     }
     draw(blank_piece, false);
     coors[0] += 1;
     draw(l_piece, true);
 }
 
 const left = () => {
+    for (let i = 0; i < board.length; i++) {
+       if (board[i][0] < 0) {
+        console.log('Action not possible')
+        return
+       } 
+    }
     draw(blank_piece, false)
     coors[0] -= 1;
     draw(l_piece, true)
@@ -91,5 +103,7 @@ draw(l_piece, true);
 // down();
 // down();
 // right();
-// left();
-rotate(l_piece);
+right();
+right();
+right();
+right();

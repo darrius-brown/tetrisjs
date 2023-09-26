@@ -1,35 +1,35 @@
 board = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],    
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],    
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
-    ];
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
 
-l_piece = [ [0,-2,0,0],
-            [0,-2,0,0],
-            [0,-2,2,0],
-            [0,0,0,0]];
+l_piece = [[0, -2, 0, 0],
+[0, -2, 0, 0],
+[0, -2, -2, 0],
+[0, 0, 0, 0]];
 
-const blank_piece = [   [0,0,0,0],
-                        [0,0,0,0],
-                        [0,0,0,0],
-                        [0,0,0,0]];
+const blank_piece = [[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0]];
 let pieceX = 0;
 let pieceY = 0;
 let coors = [4, 0];
@@ -44,13 +44,25 @@ const printBoard = () => {
 }
 
 const draw = (piece, bool) => {
-    for(let x = coors[0]; x < coors[0] + 4; x++) {
-        pieceY = 0;
-        for (let y = coors[1]; y < coors[1] + 4; y++) {
-            board[y][x] = piece[pieceY][pieceX]
-            pieceY += 1;
+    if (coors[0] > 6) {
+        for (let x = coors[0]; x < coors[0] + 4 - (coors[0] - 6); x++) {
+            pieceY = 0;
+            for (let y = coors[1]; y < coors[1] + 4; y++) {
+                board[y][x] = piece[pieceY][pieceX]
+                pieceY += 1;
+            }
+            pieceX += 1;
         }
-        pieceX += 1;
+    }
+    else {
+        for (let x = coors[0]; x < coors[0] + 4; x++) {
+            pieceY = 0;
+            for (let y = coors[1]; y < coors[1] + 4; y++) {
+                board[y][x] = piece[pieceY][pieceX]
+                pieceY += 1;
+            }
+            pieceX += 1;
+        }
     }
     pieceX = 0;
     pieceY = 0;
@@ -65,13 +77,13 @@ const down = () => {
     draw(l_piece, true);
 }
 
-const right = () => {  
+const right = () => {
     for (let i = 0; i < board.length; i++) {
         if (board[i][9] < 0) {
-         console.log('Action not possible')
-         return
-        } 
-     }
+            console.log('Action not possible')
+            return
+        }
+    }
     draw(blank_piece, false);
     coors[0] += 1;
     draw(l_piece, true);
@@ -79,10 +91,10 @@ const right = () => {
 
 const left = () => {
     for (let i = 0; i < board.length; i++) {
-       if (board[i][0] < 0) {
-        console.log('Action not possible')
-        return
-       } 
+        if (board[i][0] < 0) {
+            console.log('Action not possible')
+            return
+        }
     }
     draw(blank_piece, false)
     coors[0] -= 1;
@@ -91,11 +103,11 @@ const left = () => {
 
 const rotate = (piece) => {
     draw(blank_piece, false)
-    
+
     let transposedPiece = piece[0].map((_, colIndex) => piece.map(row => row[colIndex]));
     piecePosition = []
     let rotatedPiece = transposedPiece.map(row => row.reverse());
-    
+
     draw(rotatedPiece, true)
 }
 

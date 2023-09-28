@@ -28,8 +28,8 @@ l_piece = [ [0, -2, 0, 0],
 
 let playPiece = [[0, -2, 0, 0],
                  [0, -2, 0, 0],
-                 [0, -2, 0, 0],
-                 [0, -2, 0, 0]];
+                 [0, -2, -2, 0],
+                 [0, 0, 0, 0]];
 
 const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0],
@@ -37,24 +37,28 @@ const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0]];
 let pieceX = 0;
 let pieceY = 0;
+let rightPieceCheck = 0
+let rightRotatePieceCheck = 0
 let coors = [4, 0];
 let startX = coors[0];
 let endX = startX + 4;
 let startY = coors[1];
 let endY = startY + 4;
+const findPiece = (element) => element === -2;
 
 const spawnPiece = (max) => {
     return Math.floor(Math.random() * max);
-  }
+}
+
 const printBoard = () => {
     for (const index in board) {
         console.log(board[index] + "       index" + index);
     }
 }
-
 const draw = (piece, bool) => {
     if (coors[0] > 6) {
-        for (let x = coors[0]; x < coors[0] + 4 - (coors[0] - 6); x++) {
+        coors[0] = coors[0] - Math.abs(rightPieceCheck - rightRotatePieceCheck) 
+        for (let x = coors[0]; x < (coors[0] + 4) - (coors[0] - 6) + Math.abs(rightPieceCheck - rightRotatePieceCheck); x++) {
             pieceY = 0;
             for (let y = coors[1]; y < coors[1] + 4; y++) {
                 board[y][x] = piece[pieceY][pieceX]
@@ -113,8 +117,24 @@ const left = () => {
 const rotate = () => {
     draw(blank_piece, false);
     let transposedPiece = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
-    playPiece = transposedPiece.map(row => row.reverse());
+    let rotatedPiece = transposedPiece.map(row => row.reverse());
+    for (const i in playPiece) {
+        playIndex = playPiece[i].findLastIndex(findPiece)
+        rotateIndex = rotatedPiece[i].findIndex(findPiece)
+        if (playIndex > rightPieceCheck) {
+            rightPieceCheck = playIndex
+        }
+        if (rotateIndex > rightRotatePieceCheck) {
+            rightRotatePieceCheck = rotateIndex
+        }
+    }
+    console.log(rightPieceCheck)
+    console.log(rightRotatePieceCheck)
+    playPiece = rotatedPiece
     draw(playPiece, true);
+    rightPieceCheck = 0
+    rightRotatePieceCheck = 0
+
 }
 
 draw(playPiece, true);

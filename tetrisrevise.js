@@ -21,15 +21,20 @@ board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-l_piece = [[0, -2, 0, 0],
-[0, -2, 0, 0],
-[0, -2, -2, 0],
-[0, 0, 0, 0]];
-let playPiece
+l_piece = [ [0, -2, 0, 0],
+            [0, -2, 0, 0],
+            [0, -2, -2, 0],
+            [0, 0, 0, 0]];
+
+let playPiece = [[0, -2, 0, 0],
+                 [0, -2, 0, 0],
+                 [0, -2, 0, 0],
+                 [0, -2, 0, 0]];
+
 const blank_piece = [[0, 0, 0, 0],
-[0, 0, 0, 0],
-[0, 0, 0, 0],
-[0, 0, 0, 0]];
+                     [0, 0, 0, 0],
+                     [0, 0, 0, 0],
+                     [0, 0, 0, 0]];
 let pieceX = 0;
 let pieceY = 0;
 let coors = [4, 0];
@@ -38,7 +43,9 @@ let endX = startX + 4;
 let startY = coors[1];
 let endY = startY + 4;
 
-
+const spawnPiece = (max) => {
+    return Math.floor(Math.random() * max);
+  }
 const printBoard = () => {
     for (const index in board) {
         console.log(board[index] + "       index" + index);
@@ -103,18 +110,19 @@ const left = () => {
     draw(playPiece, true)
 }
 
-const rotate = (piece) => {
+const rotate = () => {
     draw(blank_piece, false);
-    let transposedPiece = piece[0].map((_, colIndex) => piece.map(row => row[colIndex]));
+    let transposedPiece = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
     playPiece = transposedPiece.map(row => row.reverse());
     draw(playPiece, true);
 }
 
 draw(playPiece, true);
-// down();
-// down();
-// right();
+down();
+down();
 right();
 right();
 right();
 right();
+right();
+rotate();

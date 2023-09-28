@@ -25,7 +25,7 @@ l_piece = [[0, -2, 0, 0],
 [0, -2, 0, 0],
 [0, -2, -2, 0],
 [0, 0, 0, 0]];
-
+let playPiece
 const blank_piece = [[0, 0, 0, 0],
 [0, 0, 0, 0],
 [0, 0, 0, 0],
@@ -37,6 +37,8 @@ let startX = coors[0];
 let endX = startX + 4;
 let startY = coors[1];
 let endY = startY + 4;
+
+
 const printBoard = () => {
     for (const index in board) {
         console.log(board[index] + "       index" + index);
@@ -74,7 +76,7 @@ const draw = (piece, bool) => {
 const down = () => {
     draw(blank_piece, false);
     coors[1] += 1;
-    draw(l_piece, true);
+    draw(playPiece, true);
 }
 
 const right = () => {
@@ -86,7 +88,7 @@ const right = () => {
     }
     draw(blank_piece, false);
     coors[0] += 1;
-    draw(l_piece, true);
+    draw(playPiece, true);
 }
 
 const left = () => {
@@ -98,20 +100,17 @@ const left = () => {
     }
     draw(blank_piece, false)
     coors[0] -= 1;
-    draw(l_piece, true)
+    draw(playPiece, true)
 }
 
 const rotate = (piece) => {
-    draw(blank_piece, false)
-
+    draw(blank_piece, false);
     let transposedPiece = piece[0].map((_, colIndex) => piece.map(row => row[colIndex]));
-    piecePosition = []
-    let rotatedPiece = transposedPiece.map(row => row.reverse());
-
-    draw(rotatedPiece, true)
+    playPiece = transposedPiece.map(row => row.reverse());
+    draw(playPiece, true);
 }
 
-draw(l_piece, true);
+draw(playPiece, true);
 // down();
 // down();
 // right();

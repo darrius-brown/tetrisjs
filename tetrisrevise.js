@@ -118,23 +118,23 @@ const rotate = () => {
     draw(blank_piece, false);
     let transposedPiece = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
     let rotatedPiece = transposedPiece.map(row => row.reverse());
-    for (const i in playPiece) {
-        playIndex = playPiece[i].findLastIndex(findPiece)
-        rotateIndex = rotatedPiece[i].findIndex(findPiece)
-        if (playIndex > rightPieceCheck) {
-            rightPieceCheck = playIndex
-        }
-        if (rotateIndex > rightRotatePieceCheck) {
-            rightRotatePieceCheck = rotateIndex
+    if (coors[0] >= 6) {
+        for (const i in playPiece) {
+            playIndex = playPiece[i].findLastIndex(findPiece)
+            rotateIndex = rotatedPiece[i].findIndex(findPiece)
+            if (playIndex > rightPieceCheck) {
+                rightPieceCheck = playIndex
+            }
+            if (rotateIndex > rightRotatePieceCheck) {
+                rightRotatePieceCheck = rotateIndex
+            }
         }
     }
-    console.log(rightPieceCheck)
-    console.log(rightRotatePieceCheck)
+
     playPiece = rotatedPiece
     draw(playPiece, true);
     rightPieceCheck = 0
     rightRotatePieceCheck = 0
-
 }
 
 draw(playPiece, true);
@@ -145,4 +145,11 @@ right();
 right();
 right();
 right();
+rotate();
+rotate();
+rotate();
+rotate();
+rotate();
+rotate();
+rotate();
 rotate();

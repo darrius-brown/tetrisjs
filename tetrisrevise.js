@@ -70,7 +70,7 @@ const t = new Piece([   [0, 0, 0, 0],
                         [0, 0, 0, 0]],
                         'purple')
 
-const Pieces = [i, o, s, z, l, j, t]
+const pieces = [i, o, s, z, l, j, t]
 let playPiece
 
 const blank_piece = [[0, 0, 0, 0],
@@ -89,8 +89,9 @@ let endY = startY + 4;
 
 const findPiece = (element) => element === -2;
 
-const spawnPiece = (max) => {
-    return Math.floor(Math.random() * max);
+const spawnPiece = () => {
+    playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
+    draw(playPiece, true)
 }
 
 const printBoard = () => {
@@ -181,19 +182,19 @@ const rotate = () => {
     rightRotatePieceCheck = 0
 }
 
-draw(playPiece, true);
-down();
-down();
-right();
-right();
-right();
-right();
-right();
-rotate();
-rotate();
-rotate();
-rotate();
-rotate();
-rotate();
-rotate();
-rotate();
+spawnPiece()
+// down();
+// down();
+// right();
+// right();
+// right();
+// right();
+// right();
+// rotate();
+// rotate();
+// rotate();
+// rotate();
+// rotate();
+// rotate();
+// rotate();
+// rotate();

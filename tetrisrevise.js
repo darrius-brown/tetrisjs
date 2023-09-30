@@ -21,15 +21,57 @@ board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-l_piece = [ [0, -2, 0, 0],
-            [0, -2, 0, 0],
-            [0, -2, -2, 0],
-            [0, 0, 0, 0]];
+const Piece = class {
+    constructor(display, color) {
+        this.display = display
+        this.color = color
+    }
+}
 
-let playPiece = [[0, -2, 0, 0],
-                 [0, -2, 0, 0],
-                 [0, -2, -2, 0],
-                 [0, 0, 0, 0]];
+const i = new Piece([   [0, -2, 0, 0],
+                        [0, -2, 0, 0],
+                        [0, -2, 0, 0],
+                        [0, -2, 0, 0]],
+                        'blue')
+
+const o = new Piece([   [0, 0, 0, 0],
+                        [0, -2, -2, 0],
+                        [0, -2, -2, 0],
+                        [0, 0, 0, 0]],
+                        'yellow')
+
+const s = new Piece([   [0, 0, 0, 0],
+                        [0, 0, -2, -2],
+                        [0, -2, -2, 0],
+                        [0, 0, 0, 0]],
+                        'red')
+
+const z = new Piece([   [0, 0, 0, 0],
+                        [0, -2, -2, 0],
+                        [0, 0, -2, -2],
+                        [0, 0, 0, 0]],
+                        'green')
+
+const l = new Piece([   [0, -2, 0, 0],
+                        [0, -2, 0, 0],
+                        [0, -2, -2, 0],
+                        [0, 0, 0, 0]],
+                        'orange')
+    
+const j = new Piece([   [0, 0, -2, 0],
+                        [0, 0, -2, 0],
+                        [0, -2, -2, 0],
+                        [0, 0, 0, 0]],
+                        'pink')
+                        
+const t = new Piece([   [0, 0, 0, 0],
+                        [0, -2, -2, -2],
+                        [0, 0, -2, 0],
+                        [0, 0, 0, 0]],
+                        'purple')
+
+const Pieces = [i, o, s, z, l, j, t]
+let playPiece
 
 const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0],
@@ -44,6 +86,7 @@ let startX = coors[0];
 let endX = startX + 4;
 let startY = coors[1];
 let endY = startY + 4;
+
 const findPiece = (element) => element === -2;
 
 const spawnPiece = (max) => {
@@ -55,6 +98,7 @@ const printBoard = () => {
         console.log(board[index] + "       index" + index);
     }
 }
+
 const draw = (piece, bool) => {
     if (coors[0] > 6) {
         coors[0] = coors[0] - Math.abs(rightPieceCheck - rightRotatePieceCheck) 

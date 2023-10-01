@@ -81,6 +81,8 @@ let pieceX = 0;
 let pieceY = 0;
 let rightPieceCheck = 0;
 let rightRotatePieceCheck = 0;
+let leftPieceCheck = 0;
+let leftRotatePieceCheck = 0;
 let coors = [4, 0];
 let startX = coors[0];
 let endX = startX + 4;
@@ -167,6 +169,8 @@ const rotate = () => {
         for (const i in playPiece) {
             playIndex = playPiece[i].findLastIndex(findPiece)
             rotateIndex = rotatedPiece[i].findIndex(findPiece)
+            console.log(playIndex)
+            console.log(rotateIndex)
             if (playIndex > rightPieceCheck) {
                 rightPieceCheck = playIndex
             }
@@ -176,24 +180,43 @@ const rotate = () => {
         }
     }
 
+    if (coors[0] <= 0) {
+        for (const i in playPiece) {
+            playIndex = Math.abs(playPiece[i].findIndex(findPiece))
+            rotateIndex = rotatedPiece[i].findLastIndex(findPiece)
+            if (playIndex < leftPieceCheck) {
+                leftPieceCheck = playIndex
+            }
+            if (rotateIndex < leftRotatePieceCheck) {
+                leftRotatePieceCheck = rotateIndex
+            }
+        }
+    }   
+
     playPiece = rotatedPiece
     draw(playPiece, true);
     rightPieceCheck = 0
     rightRotatePieceCheck = 0
+    leftPieceCheck = 0
+    leftRotatePieceCheck = 0
+    
 }
 
-spawnPiece()
-// down();
-// down();
+spawnPiece();
+left();
+left();
+left();
+left();
+left();
 // right();
 // right();
 // right();
 // right();
 // right();
-// rotate();
-// rotate();
-// rotate();
-// rotate();
+rotate();
+rotate();
+rotate();
+rotate();
 // rotate();
 // rotate();
 // rotate();

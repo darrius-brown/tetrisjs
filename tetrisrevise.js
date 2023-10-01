@@ -79,8 +79,8 @@ const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0]];
 let pieceX = 0;
 let pieceY = 0;
-let rightPieceCheck = 0
-let rightRotatePieceCheck = 0
+let rightPieceCheck = 0;
+let rightRotatePieceCheck = 0;
 let coors = [4, 0];
 let startX = coors[0];
 let endX = startX + 4;

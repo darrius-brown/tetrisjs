@@ -92,7 +92,7 @@ let endY = startY + 4;
 const findPiece = (element) => element === -2;
 
 const spawnPiece = () => {
-    playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
+    playPiece =  i.display
     draw(playPiece, true)
 }
 
@@ -106,6 +106,18 @@ const draw = (piece, bool) => {
     if (coors[0] > 6) {
         coors[0] = coors[0] - Math.abs(rightPieceCheck - rightRotatePieceCheck) 
         for (let x = coors[0]; x < (coors[0] + 4) - (coors[0] - 6) + Math.abs(rightPieceCheck - rightRotatePieceCheck); x++) {
+            pieceY = 0;
+            for (let y = coors[1]; y < coors[1] + 4; y++) {
+                board[y][x] = piece[pieceY][pieceX]
+                pieceY += 1;
+            }
+            pieceX += 1;
+        }
+    }
+
+    if ( coors[0] < 0) {
+        coors[0] = coors[0] + Math.abs(leftPieceCheck - leftRotatePieceCheck)
+        for(let x = coors[0]; x < (coors[0] + 4) - (coors[0] + 0) + Math.abs(leftPieceCheck - leftRotatePieceCheck); x++) {
             pieceY = 0;
             for (let y = coors[1]; y < coors[1] + 4; y++) {
                 board[y][x] = piece[pieceY][pieceX]
@@ -169,8 +181,6 @@ const rotate = () => {
         for (const i in playPiece) {
             playIndex = playPiece[i].findLastIndex(findPiece)
             rotateIndex = rotatedPiece[i].findIndex(findPiece)
-            console.log(playIndex)
-            console.log(rotateIndex)
             if (playIndex > rightPieceCheck) {
                 rightPieceCheck = playIndex
             }
@@ -203,16 +213,16 @@ const rotate = () => {
 }
 
 spawnPiece();
-left();
-left();
-left();
-left();
-left();
-// right();
-// right();
-// right();
-// right();
-// right();
+// left();
+// left();
+// left();
+// left();
+// left();
+right();
+right();
+right();
+right();
+right();
 rotate();
 rotate();
 rotate();

@@ -95,7 +95,7 @@ let endY = startY + 4;
 const findPiece = (element) => element === -2;
 
 const spawnPiece = () => {
-    playPiece =  i.display
+    playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
 }
 
@@ -179,23 +179,25 @@ const rotate = () => {
             }
         }
         rightRotateOverlap = Math.abs(rightPieceCheck - rightRotatePieceCheck)
+        coors[0] = coors[0] - rightRotateOverlap
     }
 
     if (coors[0] <= 0) {
         for (const i in playPiece) {
-            playIndex = Math.abs(playPiece[i].findIndex(findPiece))
-            rotateIndex = rotatedPiece[i].findLastIndex(findPiece)
+            playIndex =playPiece[i].findIndex(findPiece)
+            rotateIndex = rotatedPiece[i].findIndex(findPiece)
             if (playIndex < leftPieceCheck) {
                 leftPieceCheck = playIndex
             }
-            if (rotateIndex < leftRotatePieceCheck) {
+            if(rotateIndex < leftRotatePieceCheck) {
                 leftRotatePieceCheck = rotateIndex
             }
         }
+        leftRotateOverlap = Math.abs(leftPieceCheck - leftRotatePieceCheck)
+        coors[0] = coors[0] + leftRotateOverlap
     }   
 
     playPiece = rotatedPiece
-    coors[0] = coors[0] - rightRotateOverlap
     draw(playPiece, true);
     rightPieceCheck = 0
     rightRotatePieceCheck = 0
@@ -207,17 +209,17 @@ const rotate = () => {
 }
 
 spawnPiece();
-// left();
-// left();
-// left();
-// left();
-// left();
-// left();
-right();
-right();
-right();
-right();
-right();
+left();
+left();
+left();
+left();
+left();
+left();
+// right();
+// right();
+// right();
+// right();
+// right();
 rotate();
 rotate();
 rotate();

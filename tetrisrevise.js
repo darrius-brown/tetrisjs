@@ -83,6 +83,8 @@ let rightPieceCheck = 0;
 let rightRotatePieceCheck = 0;
 let leftPieceCheck = 0;
 let leftRotatePieceCheck = 0;
+let rightOverlap = 0
+let leftOverlap = 0
 let coors = [4, 0];
 let startX = coors[0];
 let endX = startX + 4;
@@ -104,40 +106,26 @@ const printBoard = () => {
 
 const draw = (piece, bool) => {
     if (coors[0] > 6) {
-        coors[0] = coors[0] - Math.abs(rightPieceCheck - rightRotatePieceCheck) 
-        for (let x = coors[0]; x < (coors[0] + 4) - (coors[0] - 6) + Math.abs(rightPieceCheck - rightRotatePieceCheck); x++) {
-            pieceY = 0;
-            for (let y = coors[1]; y < coors[1] + 4; y++) {
-                board[y][x] = piece[pieceY][pieceX]
-                pieceY += 1;
-            }
-            pieceX += 1;
-        }
+        rightOverlap = coors[0] - 6
     }
 
     if ( coors[0] < 0) {
-        coors[0] = coors[0] + Math.abs(leftPieceCheck - leftRotatePieceCheck)
-        for(let x = coors[0]; x < (coors[0] + 4) - (coors[0] + 0) + Math.abs(leftPieceCheck - leftRotatePieceCheck); x++) {
-            pieceY = 0;
-            for (let y = coors[1]; y < coors[1] + 4; y++) {
-                board[y][x] = piece[pieceY][pieceX]
-                pieceY += 1;
-            }
-            pieceX += 1;
-        }
+        leftOverlap = Math.abs(coors[0])
     }
-    else {
-        for (let x = coors[0]; x < coors[0] + 4; x++) {
-            pieceY = 0;
-            for (let y = coors[1]; y < coors[1] + 4; y++) {
-                board[y][x] = piece[pieceY][pieceX]
-                pieceY += 1;
-            }
-            pieceX += 1;
+     
+    for (let x = coors[0]; x < (coors[0] + 4) - rightOverlap; x++) {
+        pieceY = 0;
+        for (let y = coors[1]; y < coors[1] + 4; y++) {
+            board[y][x] = piece[pieceY][pieceX]
+            pieceY += 1;
         }
+        pieceX += 1;
     }
+    
     pieceX = 0;
     pieceY = 0;
+    rightOverlap = 0
+    leftOverlap = 0
     if (bool === true) {
         printBoard();
     }
@@ -213,20 +201,21 @@ const rotate = () => {
 }
 
 spawnPiece();
-// left();
-// left();
-// left();
-// left();
-// left();
-right();
-right();
-right();
-right();
-right();
+left();
+left();
+left();
+left();
+left();
+left();
+// right();
+// right();
+// right();
+// right();
+// right();
 rotate();
-rotate();
-rotate();
-rotate();
+// rotate();
+// rotate();
+// rotate();
 // rotate();
 // rotate();
 // rotate();

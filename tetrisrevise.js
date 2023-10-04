@@ -186,18 +186,23 @@ const rotate = () => {
         for (const i in playPiece) {
             playIndex =playPiece[i].findIndex(findPiece)
             rotateIndex = rotatedPiece[i].findIndex(findPiece)
-            if (playIndex < leftPieceCheck) {
+            console.log(playIndex)
+            console.log(rotateIndex)
+            if (playIndex > leftPieceCheck) {
                 leftPieceCheck = playIndex
             }
-            if(rotateIndex < leftRotatePieceCheck) {
+            if(rotateIndex > leftRotatePieceCheck) {
                 leftRotatePieceCheck = rotateIndex
             }
         }
         leftRotateOverlap = Math.abs(leftPieceCheck - leftRotatePieceCheck)
         coors[0] = coors[0] + leftRotateOverlap
+        // console.log(leftPieceCheck)
+        // console.log(leftRotatePieceCheck)
     }   
 
     playPiece = rotatedPiece
+    console.log(playPiece)
     draw(playPiece, true);
     rightPieceCheck = 0
     rightRotatePieceCheck = 0
@@ -224,6 +229,9 @@ rotate();
 rotate();
 rotate();
 rotate();
+left();
+left();
+left();
 // rotate();
 // rotate();
 // rotate();

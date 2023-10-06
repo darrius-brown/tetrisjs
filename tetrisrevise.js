@@ -28,10 +28,10 @@ const Piece = class {
     }
 }
 
-const i = new Piece([   [0, -2, 0, 0],
-                        [0, -2, 0, 0],
-                        [0, -2, 0, 0],
-                        [0, -2, 0, 0]],
+const i = new Piece([   [0, -1, 0, 0],
+                        [0, -1, 0, 0],
+                        [0, -1, 0, 0],
+                        [0, -1, 0, 0]],
                         'blue')
 
 const o = new Piece([   [0, 0, 0, 0],
@@ -41,44 +41,41 @@ const o = new Piece([   [0, 0, 0, 0],
                         'yellow')
 
 const s = new Piece([   [0, 0, 0, 0],
-                        [0, 0, -2, -2],
-                        [0, -2, -2, 0],
+                        [0, 0, -3, -3],
+                        [0, -3, -3, 0],
                         [0, 0, 0, 0]],
                         'red')
 
 const z = new Piece([   [0, 0, 0, 0],
-                        [0, -2, -2, 0],
-                        [0, 0, -2, -2],
+                        [0, -4, -4, 0],
+                        [0, 0, -4, -4],
                         [0, 0, 0, 0]],
                         'green')
 
-const l = new Piece([   [0, -2, 0, 0],
-                        [0, -2, 0, 0],
-                        [0, -2, -2, 0],
+const l = new Piece([   [0, -5, 0, 0],
+                        [0, -5, 0, 0],
+                        [0, -5, -5, 0],
                         [0, 0, 0, 0]],
                         'orange')
     
-const j = new Piece([   [0, 0, -2, 0],
-                        [0, 0, -2, 0],
-                        [0, -2, -2, 0],
+const j = new Piece([   [0, 0, -6, 0],
+                        [0, 0, -6, 0],
+                        [0, -6, -6, 0],
                         [0, 0, 0, 0]],
                         'pink')
                         
 const t = new Piece([   [0, 0, 0, 0],
-                        [0, -2, -2, -2],
-                        [0, 0, -2, 0],
+                        [0, -7, -7, -7],
+                        [0, 0, -7, 0],
                         [0, 0, 0, 0]],
                         'purple')
-
-const pieces = [i, o, s, z, l, j, t]
-let playPiece
 
 const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0],
                      [0, 0, 0, 0],
                      [0, 0, 0, 0]];
-let pieceX = 0;
-let pieceY = 0;
+
+const pieces = [i, o, s, z, l, j, t]
 let rightPieceCheck = 0;
 let rightRotatePieceCheck = 0;
 let leftPieceCheck = 0;
@@ -86,15 +83,30 @@ let leftRotatePieceCheck = 0;
 let rightOverlap = 0
 let leftOverlap = 0
 let rightRotateOverlap = 0
-let coors = [4, 0];
-let startX = coors[0];
-let endX = startX + 4;
-let startY = coors[1];
-let endY = startY + 4;
+let leftRotateOverlap = 0
+let playPiece
+let pieceX
+let pieceY
+let coors
+let startX  
+let endX 
+let startY
+let endY  
 
 const findPiece = (element) => element === -2;
 
+const start = () => {
+    //This function will start the game
+}
+
 const spawnPiece = () => {
+    coors = [4, 0];
+    startX = coors[0];
+    endX = startX + 4;
+    startY = coors[1];
+    endY = startY + 4;
+    pieceX = 0;
+    pieceY = 0;
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
 }
@@ -213,26 +225,12 @@ const rotate = () => {
     
 }
 
+const fastDown = () => {
+    //This function will drop the piece to the bottom of the board(or piece) directly below it instantly
+}
+
+const pieceEnd = () => {
+    //This function will turn the piece into positive intergers, indicating that the piece is out of movement
+}
+
 spawnPiece();
-left();
-left();
-left();
-left();
-left();
-left();
-// right();
-// right();
-// right();
-// right();
-// right();
-rotate();
-rotate();
-rotate();
-rotate();
-left();
-left();
-left();
-// rotate();
-// rotate();
-// rotate();
-// rotate();

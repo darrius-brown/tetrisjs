@@ -92,8 +92,10 @@ let startX
 let endX 
 let startY
 let endY  
+let findBottom
+let bottomIndex
 
-const findPiece = (element) => element === -2;
+const findPiece = (element) => element < 0;
 
 const start = () => {
     //This function will start the game
@@ -178,6 +180,7 @@ const rotate = () => {
     draw(blank_piece, false);
     let transposedPiece = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
     let rotatedPiece = transposedPiece.map(row => row.reverse());
+
     if (coors[0] >= 6) {
         for (const i in playPiece) {
             playIndex = playPiece[i].findLastIndex(findPiece)
@@ -231,6 +234,14 @@ const fastDown = () => {
 
 const pieceEnd = () => {
     //This function will turn the piece into positive intergers, indicating that the piece is out of movement
+    for (let i = 3; i >= 0; i--) {
+        findBottom = playPiece[i].findIndex(findPiece) 
+        if (findBottom > -1) {
+            bottomIndex = i
+            return bottomIndex
+        }
+    }
 }
 
 spawnPiece();
+console.log(pieceEnd())

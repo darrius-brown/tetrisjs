@@ -94,6 +94,7 @@ let startY
 let endY  
 let findBottom
 let bottomIndex
+let bottomFragement = []
 
 const findPiece = (element) => element < 0;
 
@@ -111,6 +112,21 @@ const spawnPiece = () => {
     pieceY = 0;
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
+    bottomIndex = findPieceBottom()
+}
+
+const findPieceBottom = () => {
+    for (let i = 3; i >= 0; i--) {
+        findBottom = playPiece[i].findIndex(findPiece) 
+        if (findBottom > -1) {
+            for(const j in playPiece[i]) {
+                if(playPiece[i][j] < 0) {
+                    bottomFragement.push(parseInt(j))
+                }
+            }
+            return i
+        }
+    }
 }
 
 const printBoard = () => {
@@ -150,6 +166,7 @@ const down = () => {
     draw(blank_piece, false);
     coors[1] += 1;
     draw(playPiece, true);
+    console.log(coors)
 }
 
 const right = () => {
@@ -216,32 +233,46 @@ const rotate = () => {
         // console.log(leftRotatePieceCheck)
     }   
 
-    playPiece = rotatedPiece
-    console.log(playPiece)
+    playPiece = rotatedPiece;
     draw(playPiece, true);
-    rightPieceCheck = 0
-    rightRotatePieceCheck = 0
-    leftPieceCheck = 0
-    leftRotatePieceCheck = 0
-    rightRotateOverlap = 0
-    leftRotateOverlap = 0
+    bottomIndex = findPieceBottom()
+    rightPieceCheck = 0;
+    rightRotatePieceCheck = 0;
+    leftPieceCheck = 0;
+    leftRotatePieceCheck = 0;
+    rightRotateOverlap = 0;
+    leftRotateOverlap = 0;
     
+}
+
+const checkPieceEnd = () => {
+
 }
 
 const fastDown = () => {
     //This function will drop the piece to the bottom of the board(or piece) directly below it instantly
 }
 
-const pieceEnd = () => {
-    //This function will turn the piece into positive intergers, indicating that the piece is out of movement
-    for (let i = 3; i >= 0; i--) {
-        findBottom = playPiece[i].findIndex(findPiece) 
-        if (findBottom > -1) {
-            bottomIndex = i
-            return bottomIndex
-        }
-    }
-}
+
 
 spawnPiece();
-console.log(pieceEnd())
+console.log(bottomFragement)
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();

@@ -163,6 +163,12 @@ const draw = (piece, bool) => {
 }
 
 const down = () => {
+    for (let i = 0; i < board.length; i++) {
+        if (board[19][i] < 0) {
+            console.log('Action not possible')
+            return
+        }
+    }
     draw(blank_piece, false);
     coors[1] += 1;
     draw(playPiece, true);
@@ -246,7 +252,7 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-
+    
 }
 
 const fastDown = () => {

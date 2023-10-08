@@ -84,6 +84,7 @@ let rightOverlap = 0
 let leftOverlap = 0
 let rightRotateOverlap = 0
 let leftRotateOverlap = 0
+let bottomOverlap = 0
 let playPiece
 let pieceX
 let pieceY
@@ -110,6 +111,7 @@ const spawnPiece = () => {
     endY = startY + 4;
     pieceX = 0;
     pieceY = 0;
+    bottomOverlap = 0
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
     bottomIndex = findPieceBottom()
@@ -146,7 +148,7 @@ const draw = (piece, bool) => {
      
     for (let x = coors[0]; x < (coors[0] + 4) - rightOverlap; x++) {
         pieceY = 0;
-        for (let y = coors[1]; y < coors[1] + 4; y++) {
+        for (let y = coors[1]; y < (coors[1] + 4) - bottomOverlap; y++) {
             board[y][x] = piece[pieceY][pieceX]
             pieceY += 1;
         }
@@ -169,10 +171,13 @@ const down = () => {
             return
         }
     }
+
+    if (coors[1] === 16 && bottomIndex === 2) {
+        bottomOverlap = 1
+    }
     draw(blank_piece, false);
     coors[1] += 1;
     draw(playPiece, true);
-    console.log(coors)
 }
 
 const right = () => {
@@ -224,8 +229,6 @@ const rotate = () => {
         for (const i in playPiece) {
             playIndex =playPiece[i].findIndex(findPiece)
             rotateIndex = rotatedPiece[i].findIndex(findPiece)
-            console.log(playIndex)
-            console.log(rotateIndex)
             if (playIndex > leftPieceCheck) {
                 leftPieceCheck = playIndex
             }
@@ -235,8 +238,6 @@ const rotate = () => {
         }
         leftRotateOverlap = Math.abs(leftPieceCheck - leftRotatePieceCheck)
         coors[0] = coors[0] + leftRotateOverlap
-        // console.log(leftPieceCheck)
-        // console.log(leftRotatePieceCheck)
     }   
 
     playPiece = rotatedPiece;
@@ -255,6 +256,18 @@ const checkPieceEnd = () => {
     
 }
 
+const endPiece = () => {
+    for (const i in playPiece) {
+        for (const j in playPiece[i]) {
+            if (playPiece[i][j] < 0) {
+                playPiece[i][j] = Math.abs(playPiece[i][j])
+            }
+        }
+    }
+    draw(playPiece, true);
+    spawnPiece();
+}
+
 const fastDown = () => {
     //This function will drop the piece to the bottom of the board(or piece) directly below it instantly
 }
@@ -262,7 +275,8 @@ const fastDown = () => {
 
 
 spawnPiece();
-console.log(bottomFragement)
+down();
+rotate();
 down();
 down();
 down();
@@ -281,4 +295,4 @@ down();
 down();
 down();
 down();
-down();
+endPiece();

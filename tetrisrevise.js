@@ -96,8 +96,11 @@ let endY
 let findBottom
 let bottomIndex
 let bottomFragement = []
+let endRequirement
 
 const findPiece = (element) => element < 0;
+
+const findEndPiece = (element) => element > 0;
 
 const start = () => {
     //This function will start the game
@@ -123,7 +126,7 @@ const findPieceBottom = () => {
         if (findBottom > -1) {
             for(const j in playPiece[i]) {
                 if(playPiece[i][j] < 0) {
-                    bottomFragement.push(parseInt(j))
+                    bottomFragement.push(parseInt(j) + coors[0])
                 }
             }
             return i
@@ -172,8 +175,8 @@ const down = () => {
         }
     }
 
-    if (coors[1] === 16 && bottomIndex === 2) {
-        bottomOverlap = 1
+    if (coors[1] >= 16 && bottomIndex < 3) {
+        bottomOverlap = 3 - bottomIndex
     }
     draw(blank_piece, false);
     coors[1] += 1;
@@ -253,7 +256,19 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-    
+    testVar = []
+    for (const i in bottomFragement) {
+        testVar.push (board[i][coors[1] + 3 + (3 - bottomIndex)])
+    }
+    endRequirement = testVar.findLastIndex(findEndPiece)
+    if (!endRequirement) {
+        return
+    }
+    if (endRequirement && bottomIndex < 3) {
+        bottomOverlap += 1
+    } else {
+        endPiece()
+    }
 }
 
 const endPiece = () => {
@@ -278,24 +293,26 @@ const fastDown = () => {
 
 
 spawnPiece();
-down();
-rotate();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-endPiece();
+// down();
+// rotate();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// down();
+// endPiece();
+console.log(bottomFragement)
+checkPieceEnd();

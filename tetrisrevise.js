@@ -95,6 +95,7 @@ let startY
 let endY  
 let findBottom
 let bottomIndex
+let stack
 let bottomFragement = []
 let endRequirement = 0
 
@@ -115,12 +116,14 @@ const spawnPiece = () => {
     pieceX = 0;
     pieceY = 0;
     bottomOverlap = 0
+    stack = false
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
     bottomIndex = findPieceBottom()
 }
 
 const findPieceBottom = () => {
+    bottomFragement = []
     for (let i = 3; i >= 0; i--) {
         findBottom = playPiece[i].findIndex(findPiece) 
         if (findBottom > -1) {
@@ -181,8 +184,13 @@ const down = () => {
     draw(blank_piece, false);
     coors[1] += 1;
     draw(playPiece, true);
+    if (stack === true) {
+        endPiece();
+        return
+    }
     findPieceBottom();
     checkPieceEnd();
+    console.log(bottomFragement)
 }
 
 const right = () => {
@@ -258,18 +266,25 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
+    console.log(coors)
     checkArray = []
+    boardYCheck = coors[1] + 4
+    if (boardYCheck > 19) {
+        return
+    }
     for (const i in bottomFragement) {
-        checkArray.push(board[bottomFragement[i]][coors[1] + 3 + (3 - bottomIndex)])
+        checkArray.push(board[boardYCheck][bottomFragement[i]])
     }
     endRequirement = checkArray.findLastIndex(findEndPiece)
     if (endRequirement  <= 0) {
         return
     }
     if (endRequirement > 0 && bottomIndex < 3) {
+        console.log('piece on top of piece')
         bottomOverlap += 1
+        stack = true
     } else {
-        endPiece()
+        endPiece();
     }
 }
 
@@ -297,6 +312,25 @@ const fastDown = () => {
 spawnPiece();
 down();
 // rotate();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
 down();
 down();
 down();

@@ -270,6 +270,9 @@ const endPiece = () => {
 
 const fastDown = () => {
     //This function will drop the piece to the bottom of the board(or piece) directly below it instantly
+    //Have to loop down the board and find the first instance when you find a positive number
+        //Only loop through the 4 spaces under the playpiece 
+        //then you draw the piece right ontop of 
 }
 
 

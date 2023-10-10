@@ -96,7 +96,7 @@ let endY
 let findBottom
 let bottomIndex
 let bottomFragement = []
-let endRequirement
+let endRequirement = 0
 
 const findPiece = (element) => element < 0;
 
@@ -170,7 +170,7 @@ const draw = (piece, bool) => {
 const down = () => {
     for (let i = 0; i < board.length; i++) {
         if (board[19][i] < 0) {
-            console.log('Action not possible')
+            endPiece()
             return
         }
     }
@@ -181,6 +181,8 @@ const down = () => {
     draw(blank_piece, false);
     coors[1] += 1;
     draw(playPiece, true);
+    findPieceBottom();
+    checkPieceEnd();
 }
 
 const right = () => {
@@ -244,8 +246,8 @@ const rotate = () => {
     }   
 
     playPiece = rotatedPiece;
-    draw(playPiece, true);
     bottomIndex = findPieceBottom()
+    draw(playPiece, true);
     rightPieceCheck = 0;
     rightRotatePieceCheck = 0;
     leftPieceCheck = 0;
@@ -256,15 +258,15 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-    testVar = []
+    checkArray = []
     for (const i in bottomFragement) {
-        testVar.push (board[i][coors[1] + 3 + (3 - bottomIndex)])
+        checkArray.push(board[bottomFragement[i]][coors[1] + 3 + (3 - bottomIndex)])
     }
-    endRequirement = testVar.findLastIndex(findEndPiece)
-    if (!endRequirement) {
+    endRequirement = checkArray.findLastIndex(findEndPiece)
+    if (endRequirement  <= 0) {
         return
     }
-    if (endRequirement && bottomIndex < 3) {
+    if (endRequirement > 0 && bottomIndex < 3) {
         bottomOverlap += 1
     } else {
         endPiece()
@@ -293,26 +295,41 @@ const fastDown = () => {
 
 
 spawnPiece();
-// down();
+down();
 // rotate();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// down();
-// endPiece();
-console.log(bottomFragement)
-checkPieceEnd();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();
+down();

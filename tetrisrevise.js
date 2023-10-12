@@ -89,10 +89,6 @@ let playPiece
 let pieceX
 let pieceY
 let coors
-let startX  
-let endX 
-let startY
-let endY  
 let findBottom
 let bottomIndex
 let stack
@@ -109,10 +105,6 @@ const start = () => {
 
 const spawnPiece = () => {
     coors = [4, 0];
-    startX = coors[0];
-    endX = startX + 4;
-    startY = coors[1];
-    endY = startY + 4;
     pieceX = 0;
     pieceY = 0;
     bottomOverlap = 0
@@ -307,63 +299,4 @@ const fastDown = () => {
         //then you draw the piece right ontop of 
 }
 
-
-
 spawnPiece();
-down();
-// rotate();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();
-down();

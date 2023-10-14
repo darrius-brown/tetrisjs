@@ -196,7 +196,6 @@ const down = () => {
     }
     findPieceBottom();
     checkPieceEnd();
-    console.log(checkArray)
 }
 
 const right = () => {
@@ -277,7 +276,6 @@ const checkPieceEnd = () => {
     checkArray = []
     checkHangingFragementArray = []
     boardYCheck = coors[1] + 4
-    console.log('board y check ' + boardYCheck)
     if (boardYCheck > 19) {
         return
     }
@@ -285,13 +283,13 @@ const checkPieceEnd = () => {
         checkArray.push(board[boardYCheck][bottomFragement[i]])
         checkHangingFragementArray.push(board[boardYCheck - 1][bottomFragement[i]])
     }
-    console.log('bottom fragement ' + bottomFragement)
     endRequirement = checkArray.findLastIndex(findEndPiece)
     endRequirementForHangingFragement = checkHangingFragementArray.findLastIndex(findEndPiece)
-    if (endRequirement  <= 0 && endRequirementForHangingFragement <= 0) {
+    console.log('end requirement' + endRequirement + 'board y check ' + boardYCheck + 'bottom fragement ' + bottomFragement + 'check array' + checkArray)
+    if (endRequirement  < 0 && endRequirementForHangingFragement < 0) {
         return
     }
-    if ((endRequirement > 0 && bottomIndex < 3) || (endRequirementForHangingFragement > 0 && bottomIndex < 3)) {
+    if ((endRequirement > -1 && bottomIndex < 3) || (endRequirementForHangingFragement > -1 && bottomIndex < 3)) {
         bottomOverlap += 1
         stack = true
     } else {
@@ -299,7 +297,7 @@ const checkPieceEnd = () => {
     }
 }
 
-const endPiece = () => {
+const endPiece = () => {s
     let playPieceConvertedToEndPiece = [[],[],[],[]]
     for (const i in playPiece) {
         for (const j in playPiece[i]) {
@@ -310,7 +308,6 @@ const endPiece = () => {
             }
         }
     }
-    console.log(playPieceConvertedToEndPiece)
     draw(playPieceConvertedToEndPiece, true);
     spawnPiece();
 }
@@ -322,9 +319,9 @@ const fastDown = () => {
         //then you draw the piece right ontop of 
 }
 
-setInterval(() => {
-    down();
-}, 1000);
+// setInterval(() => {
+//     down();
+// }, 1000);
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'a' || event.key === 'A' ) {

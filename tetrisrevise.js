@@ -258,20 +258,22 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-    console.log(coors)
     checkArray = []
+    checkHangingFragementArray = []
     boardYCheck = coors[1] + 4
     if (boardYCheck > 19) {
         return
     }
     for (const i in bottomFragement) {
         checkArray.push(board[boardYCheck][bottomFragement[i]])
+        checkHangingFragementArray.push(board[boardYCheck - 1][bottomFragement[i]])
     }
     endRequirement = checkArray.findLastIndex(findEndPiece)
-    if (endRequirement  <= 0) {
+    endRequirementForHangingFragement = checkHangingFragementArray.findLastIndex(findEndPiece)
+    if (endRequirement  <= 0 && endRequirementForHangingFragement <= 0) {
         return
     }
-    if (endRequirement > 0 && bottomIndex < 3) {
+    if ((endRequirement > 0 && bottomIndex < 3) || (endRequirementForHangingFragement > 0 && bottomIndex < 3)) {
         console.log('piece on top of piece')
         bottomOverlap += 1
         stack = true

@@ -123,10 +123,6 @@ const findPiece = (element) => element < 0;
 
 const findEndPiece = (element) => element > 0;
 
-const start = () => {
-    //This function will start the game
-}
-
 const spawnPiece = () => {
     coors = [4, 0];
     pieceX = 0;
@@ -153,12 +149,6 @@ const findPieceBottom = () => {
     }
 }
 
-const printBoard = () => {
-    for (const index in board) {
-        console.log(board[index] + "       index" + index);
-    }
-}
-
 const draw = (piece, bool) => {
     if (coors[0] > 6) {
         rightOverlap = coors[0] - 6
@@ -182,7 +172,6 @@ const draw = (piece, bool) => {
     rightOverlap = 0
     leftOverlap = 0
     if (bool === true) {
-        printBoard();
         renderBoard()
     }
 }
@@ -207,7 +196,7 @@ const down = () => {
     }
     findPieceBottom();
     checkPieceEnd();
-    console.log(bottomFragement)
+    console.log(checkArray)
 }
 
 const right = () => {
@@ -283,9 +272,12 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
+    //debug
+        //The correct Row is correct always
     checkArray = []
     checkHangingFragementArray = []
     boardYCheck = coors[1] + 4
+    console.log('board y check ' + boardYCheck)
     if (boardYCheck > 19) {
         return
     }
@@ -293,13 +285,13 @@ const checkPieceEnd = () => {
         checkArray.push(board[boardYCheck][bottomFragement[i]])
         checkHangingFragementArray.push(board[boardYCheck - 1][bottomFragement[i]])
     }
+    console.log('bottom fragement ' + bottomFragement)
     endRequirement = checkArray.findLastIndex(findEndPiece)
     endRequirementForHangingFragement = checkHangingFragementArray.findLastIndex(findEndPiece)
     if (endRequirement  <= 0 && endRequirementForHangingFragement <= 0) {
         return
     }
     if ((endRequirement > 0 && bottomIndex < 3) || (endRequirementForHangingFragement > 0 && bottomIndex < 3)) {
-        console.log('piece on top of piece')
         bottomOverlap += 1
         stack = true
     } else {
@@ -308,14 +300,18 @@ const checkPieceEnd = () => {
 }
 
 const endPiece = () => {
+    let playPieceConvertedToEndPiece = [[],[],[],[]]
     for (const i in playPiece) {
         for (const j in playPiece[i]) {
             if (playPiece[i][j] < 0) {
-                playPiece[i][j] = Math.abs(playPiece[i][j])
+                playPieceConvertedToEndPiece[i].push(Math.abs(playPiece[i][j])) 
+            } else {
+                playPieceConvertedToEndPiece[i].push(0)
             }
         }
     }
-    draw(playPiece, true);
+    console.log(playPieceConvertedToEndPiece)
+    draw(playPieceConvertedToEndPiece, true);
     spawnPiece();
 }
 

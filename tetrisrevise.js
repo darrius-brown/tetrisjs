@@ -1,3 +1,5 @@
+
+document.addEventListener('DOMContentLoaded', function () {
 board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -20,6 +22,28 @@ board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
+const boardContainer = document.getElementById('board-container');
+
+// Function to render the board array
+const renderBoard = () => {
+    boardContainer.innerHTML = ''; // Clear the board container
+
+    for (let row = 0; row < board.length; row++) {
+        const rowElement = document.createElement('div');
+        rowElement.className = 'row';
+        
+        for (let col = 0; col < board[row].length; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.innerText = board[row][col]; // Display the value from the board array
+            rowElement.appendChild(cell);
+        }
+        
+        boardContainer.appendChild(rowElement);
+    }
+};
+
+renderBoard();
 
 const Piece = class {
     constructor(display, color) {
@@ -159,6 +183,7 @@ const draw = (piece, bool) => {
     leftOverlap = 0
     if (bool === true) {
         printBoard();
+        renderBoard()
     }
 }
 
@@ -301,4 +326,23 @@ const fastDown = () => {
         //then you draw the piece right ontop of 
 }
 
+setInterval(() => {
+    down();
+}, 1000);
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'a' || event.key === 'A' ) {
+        left();
+    } else if (event.key === 'd' || event.key === 'D') {
+        right();
+    } else if (event.key === 's' || event.key === 'S') {
+        down();
+    } else if (event.key === 'w' || event.key === 'W') {
+        rotate();
+    }
+
+});
+
 spawnPiece();
+
+});

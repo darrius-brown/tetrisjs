@@ -275,7 +275,7 @@ const checkPieceEnd = () => {
         //The correct Row is correct always
     checkArray = []
     checkHangingFragementArray = []
-    boardYCheck = coors[1] + 4
+    boardYCheck = coors[1] + 3
     if (boardYCheck > 19) {
         return
     }

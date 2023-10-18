@@ -116,6 +116,7 @@ let coors
 let findBottom
 let bottomIndex
 let stack
+let searchAdjustmentWhenBottomIndexIsOneActive
 let bottomFragement = []
 let endRequirement = 0
 
@@ -123,12 +124,17 @@ const findPiece = (element) => element < 0;
 
 const findEndPiece = (element) => element > 0;
 
+const startGame = () => {
+    spawnPiece();
+}
+
 const spawnPiece = () => {
     coors = [4, 0];
     pieceX = 0;
     pieceY = 0;
     bottomOverlap = 0
     stack = false
+    searchAdjustmentWhenBottomIndexIsOneActive = false
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
     bottomIndex = findPieceBottom()
@@ -260,6 +266,7 @@ const rotate = () => {
 
     playPiece = rotatedPiece;
     bottomIndex = findPieceBottom()
+    console.log(bottomFragement)
     draw(playPiece, true);
     rightPieceCheck = 0;
     rightRotatePieceCheck = 0;
@@ -271,12 +278,9 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-    //debug
-        //The correct Row is correct always
     checkArray = []
     checkHangingFragementArray = []
-    //Maybe add something to board check
-    boardYCheck = coors[1] + 3
+    boardYCheck = coors[1] + 4
     if (boardYCheck > 19) {
         return
     }
@@ -286,13 +290,17 @@ const checkPieceEnd = () => {
     }
     endRequirement = checkArray.findLastIndex(findEndPiece)
     endRequirementForHangingFragement = checkHangingFragementArray.findLastIndex(findEndPiece)
-    console.log('end requirement' + endRequirement + 'board y check ' + boardYCheck + 'bottom fragement ' + bottomFragement + 'check array' + checkArray)
+    console.log('coors: ' + coors + 'end requirement' + endRequirement + 'board y check ' + boardYCheck + 'bottom fragement ' + bottomFragement + 'check array' + checkArray + 'bottom index: ' + bottomIndex)
     if (endRequirement  < 0 && endRequirementForHangingFragement < 0) {
         return
     }
     if ((endRequirement > -1 && bottomIndex < 3) || (endRequirementForHangingFragement > -1 && bottomIndex < 3)) {
         bottomOverlap += 1
         stack = true
+        if (bottomIndex === 1 && searchAdjustmentWhenBottomIndexIsOneActive === false) {
+            stack = false
+            searchAdjustmentWhenBottomIndexIsOneActive = true
+        }
     } else {
         endPiece();
     }
@@ -337,6 +345,5 @@ document.addEventListener('keydown', (event) => {
 
 });
 
-spawnPiece();
-
+startGame();
 });

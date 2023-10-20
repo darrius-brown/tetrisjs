@@ -24,9 +24,9 @@ board = [
 ];
 const boardContainer = document.getElementById('board-container');
 
-// Function to render the board array
+
 const renderBoard = () => {
-    boardContainer.innerHTML = ''; // Clear the board container
+    boardContainer.innerHTML = ''; 
 
     for (let row = 0; row < board.length; row++) {
         const rowElement = document.createElement('div');
@@ -35,7 +35,7 @@ const renderBoard = () => {
         for (let col = 0; col < board[row].length; col++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.innerText = board[row][col]; // Display the value from the board array
+            cell.innerText = board[row][col];
             rowElement.appendChild(cell);
         }
         
@@ -104,21 +104,21 @@ let rightPieceCheck = 0;
 let rightRotatePieceCheck = 0;
 let leftPieceCheck = 0;
 let leftRotatePieceCheck = 0;
-let rightOverlap = 0
-let leftOverlap = 0
-let rightRotateOverlap = 0
-let leftRotateOverlap = 0
-let bottomOverlap = 0
-let playPiece
-let pieceX
-let pieceY
-let coors
-let findBottom
-let bottomIndex
-let stack
-let searchAdjustmentWhenBottomIndexIsOneActive
-let bottomFragement = []
-let endRequirement = 0
+let rightOverlap = 0;
+let leftOverlap = 0;
+let rightRotateOverlap = 0;
+let leftRotateOverlap = 0;
+let bottomOverlap = 0;
+let playPiece;
+let pieceX;
+let pieceY;
+let coors;
+let findBottom;
+let bottomIndex;
+let stack;
+let searchAdjustmentWhenBottomIndexIsOneActive;
+let bottomFragement = [];
+let endRequirement = 0;
 
 const findPiece = (element) => element < 0;
 
@@ -144,6 +144,22 @@ const findPieceBottom = () => {
     bottomFragement = []
     for (let i = 3; i >= 0; i--) {
         findBottom = playPiece[i].findIndex(findPiece) 
+        if (findBottom > -1) {
+            for(const j in playPiece[i]) {
+                if(playPiece[i][j] < 0) {
+                    bottomFragement.push(parseInt(j) + coors[0])
+                }
+            }
+            return i
+        }
+    }
+}
+
+const findPieceRight = () => {
+    //working
+    rightFragement = []
+    for (let i = 3; i >= 0; i--) {
+        //Need to find a way to gran all index 3s of  the playpiece and run a filter on it
         if (findBottom > -1) {
             for(const j in playPiece[i]) {
                 if(playPiece[i][j] < 0) {
@@ -214,6 +230,11 @@ const right = () => {
     draw(blank_piece, false);
     coors[0] += 1;
     draw(playPiece, true);
+}
+
+const checkRightSide = () => {
+    checkRightArray = []
+    boardXCheck = coors[0] + 4
 }
 
 const left = () => {

@@ -160,7 +160,6 @@ const findPieceBottom = () => {
 const findPieceRight = () => {
     let transposedPieceForRightCheck = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
     let playPieceItiratedFromRight = transposedPieceForRightCheck.reverse()
-    console.log(playPieceItiratedFromRight)
     rightFragement = []
     for (let i = 0; i < 4; i++) {
         findRight = playPieceItiratedFromRight[i].findIndex(findPiece)
@@ -170,7 +169,6 @@ const findPieceRight = () => {
                     rightFragement.push(parseInt(j))
                 }
             }
-            console.log('right fragement' + rightFragement)
             return i
         }
     }

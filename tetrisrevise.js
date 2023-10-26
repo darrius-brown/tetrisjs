@@ -167,7 +167,7 @@ const findPieceRight = () => {
         if (findRight > -1) {
             for(const j in playPieceItiratedFromRight[i]) {
                 if(playPieceItiratedFromRight[i][j] < 0) {
-                    rightFragement.push(parseInt(j) + coors[0])
+                    rightFragement.push(parseInt(j))
                 }
             }
             console.log('right fragement' + rightFragement)

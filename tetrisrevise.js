@@ -114,6 +114,7 @@ let pieceX;
 let pieceY;
 let coors;
 let findBottom;
+let findRight
 let bottomIndex;
 let stack;
 let searchAdjustmentWhenBottomIndexIsOneActive;
@@ -138,6 +139,7 @@ const spawnPiece = () => {
     playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
     draw(playPiece, true)
     bottomIndex = findPieceBottom()
+    rightIndex = findPieceRight()
 }
 
 const findPieceBottom = () => {
@@ -156,19 +158,23 @@ const findPieceBottom = () => {
 }
 
 const findPieceRight = () => {
-    //working
+    let transposedPieceForRightCheck = playPiece[0].map((_, colIndex) => playPiece.map(row => row[colIndex]));
+    let playPieceItiratedFromRight = transposedPieceForRightCheck.reverse()
+    console.log(playPieceItiratedFromRight)
     rightFragement = []
-    for (let i = 3; i >= 0; i--) {
-        //Need to find a way to gran all index 3s of  the playpiece and run a filter on it
-        if (findBottom > -1) {
-            for(const j in playPiece[i]) {
-                if(playPiece[i][j] < 0) {
-                    bottomFragement.push(parseInt(j) + coors[0])
+    for (let i = 0; i < 4; i++) {
+        findRight = playPieceItiratedFromRight[i].findIndex(findPiece)
+        if (findRight > -1) {
+            for(const j in playPieceItiratedFromRight[i]) {
+                if(playPieceItiratedFromRight[i][j] < 0) {
+                    rightFragement.push(parseInt(j) + coors[0])
                 }
             }
+            console.log('right fragement' + rightFragement)
             return i
         }
     }
+    
 }
 
 const draw = (piece, bool) => {
@@ -230,6 +236,7 @@ const right = () => {
     draw(blank_piece, false);
     coors[0] += 1;
     draw(playPiece, true);
+    findPieceRight()
 }
 
 const checkRightSide = () => {
@@ -287,6 +294,7 @@ const rotate = () => {
 
     playPiece = rotatedPiece;
     bottomIndex = findPieceBottom()
+    rightIndex = findPieceRight()
     console.log(bottomFragement)
     draw(playPiece, true);
     rightPieceCheck = 0;

@@ -120,6 +120,7 @@ let stack;
 let searchAdjustmentWhenBottomIndexIsOneActive;
 let bottomFragement = [];
 let endRequirement = 0;
+let arrayUnderPlayPiece = []
 
 const findPiece = (element) => element < 0;
 
@@ -136,7 +137,7 @@ const spawnPiece = () => {
     bottomOverlap = 0
     stack = false
     searchAdjustmentWhenBottomIndexIsOneActive = false
-    playPiece =  pieces[Math.floor(Math.random() * pieces.length)].display
+    playPiece =  pieces[0].display
     draw(playPiece, true)
     bottomIndex = findPieceBottom()
     rightIndex = findPieceRight()
@@ -305,19 +306,18 @@ const rotate = () => {
 }
 
 const checkPieceEnd = () => {
-    checkArray = []
     checkHangingFragementArray = []
     boardYCheck = coors[1] + 4
-    if (boardYCheck > 19) {
-        return
+    if(boardYCheck < 20) {
+        arrayUnderPlayPiece = []
+        for (const i in bottomFragement) {
+            arrayUnderPlayPiece.push(board[boardYCheck][bottomFragement[i]])
+            checkHangingFragementArray.push(board[boardYCheck - 1][bottomFragement[i]])
+        }
     }
-    for (const i in bottomFragement) {
-        checkArray.push(board[boardYCheck][bottomFragement[i]])
-        checkHangingFragementArray.push(board[boardYCheck - 1][bottomFragement[i]])
-    }
-    endRequirement = checkArray.findLastIndex(findEndPiece)
+    endRequirement = arrayUnderPlayPiece.findLastIndex(findEndPiece)
     endRequirementForHangingFragement = checkHangingFragementArray.findLastIndex(findEndPiece)
-    console.log('coors: ' + coors + 'end requirement' + endRequirement + 'board y check ' + boardYCheck + 'bottom fragement ' + bottomFragement + 'check array' + checkArray + 'bottom index: ' + bottomIndex)
+    console.log('coors: ' + coors + 'end requirement' + endRequirement + 'board y check ' + boardYCheck + 'bottom fragement ' + bottomFragement + 'arrayUnderPlayPiece' + arrayUnderPlayPiece + 'bottom index: ' + bottomIndex)
     if (endRequirement  < 0 && endRequirementForHangingFragement < 0) {
         return
     }

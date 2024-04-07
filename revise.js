@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pieces = [i, o, s, z, l, j, t]
 
     let playPiece
+    let coordinatesOfFragementsOnBoard = []
 
     const spawnPiece = () => {
         const randomNumberGenerater = () => {
@@ -138,13 +139,14 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
                 board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                     if (bool === false) {
                         board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0 
                     }
                 }
             }
         }
-
+        console.log(coordinatesOfFragementsOnBoard)
         if (bool === true) {
             renderBoard()
         }

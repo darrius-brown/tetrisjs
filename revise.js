@@ -119,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const pieces = [i, o, s, z, l, j, t]
 
     let playPiece
+    let boardValues = []
     let coordinatesOfFragementsOnBoard = []
+    let coordinatesRightOfFragments = []
 
     const spawnPiece = () => {
         const randomNumberGenerater = () => {
@@ -158,16 +160,30 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true)
     }
 
-     document.addEventListener('keydown', (event) => {
-        if (event.key === 'a' || event.key === 'A' ) {
-            left();
-        } else if (event.key === 'd' || event.key === 'D') {
-            right();
-        } else if (event.key === 's' || event.key === 'S') {
-            down();
-        } else if (event.key === 'w' || event.key === 'W') {
-            rotate();
+    const checkBoardValues = (coordinates) => {
+        for (i = 0; i < coordinates.length; i++) {
+            if (board[coordinates[0]][coordinates[1]] > 0) {
+                return false
+            }
+            return true
         }
+    }
+
+    const checkRight = () => {
+        coordinatesRightOfFragments = coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x + 1])
+        return checkBoardValues()
+    }
+
+    document.addEventListener('keydown', (event) => {
+    if (event.key === 'a' || event.key === 'A' ) {
+        left();
+    } else if (event.key === 'd' || event.key === 'D') {
+        right();
+    } else if (event.key === 's' || event.key === 'S') {
+        down();
+    } else if (event.key === 'w' || event.key === 'W') {
+        rotate();
+    }
     
     });
     spawnPiece();

@@ -107,30 +107,66 @@ document.addEventListener('DOMContentLoaded', function () {
         'purple',
         [2, -1]
     )
+
+    const blank_piece = new Piece([[0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]],
+            'none',
+            [0,0]
+        )
+
     const pieces = [i, o, s, z, l, j, t]
+
     let playPiece
 
     const spawnPiece = () => {
         const randomNumberGenerater = () => {
             return Math.floor(Math.random() * pieces.length)
         }
-        // const randomNumber = randomNumberGenerater()  
-        const randomNumber = 0  
-        playPiece = {pieceName: pieces[randomNumber],
-                    display: pieces[randomNumber].display,
-                    coordinates: pieces[randomNumber].startingCoordinates
-        }
+        const randomNumber = randomNumberGenerater()  
+        const selectedPiece = pieces[randomNumber]
+        playPiece = {
+                    display: selectedPiece.display,
+                    coordinates: selectedPiece.startingCoordinates
+                    }
+        draw(playPiece, true)
     }
-    const draw = (piece) => {
+
+    const draw = (piece, bool) => {
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
-                board[playPiece.coordinates[1] + i][playPiece.coordinates[0] + j] = piece.display[i][j]
+                board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                    if (bool === false) {
+                        board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0 
+                    }
                 }
             }
         }
+
+        if (bool === true) {
+            renderBoard()
+        }
     };
-     spawnPiece();
-     draw(playPiece);
-     renderBoard();
+
+    const down = () => {
+        draw(playPiece, false)
+        playPiece.coordinates[1] += 1
+        draw(playPiece, true)
+    }
+
+     document.addEventListener('keydown', (event) => {
+        if (event.key === 'a' || event.key === 'A' ) {
+            left();
+        } else if (event.key === 'd' || event.key === 'D') {
+            right();
+        } else if (event.key === 's' || event.key === 'S') {
+            down();
+        } else if (event.key === 'w' || event.key === 'W') {
+            rotate();
+        }
+    
+    });
+    spawnPiece();
 })

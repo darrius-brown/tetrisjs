@@ -100,6 +100,7 @@ const blank_piece = [[0, 0, 0, 0],
                      [0, 0, 0, 0]];
 
 const pieces = [i, o, s, z, l, j, t]
+const midpoint = [4, 0]
 let rightPieceCheck = 0;
 let rightRotatePieceCheck = 0;
 let leftPieceCheck = 0;
@@ -132,7 +133,7 @@ const startGame = () => {
 }
 
 const spawnPiece = () => {
-    coors = [4, 0];
+    coors = midpoint;
     pieceX = 0;
     pieceY = 0;
     bottomOverlap = 0

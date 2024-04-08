@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         findMagicEdges(selectedPiece.display)
         draw(playPiece, true)
     }
+
     const findMagicEdges = (playPieceDisplay) => {
         //This block configures rightEdges
         let i = 0;
@@ -195,26 +196,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         //This block configures bottomEdges
-        i = playPieceDisplay.length - 1;
+        i = 3;
         j = 0;
         while (i > -1) {
             const bottomMagicEdgeValue = playPieceDisplay[i][j];
             if (bottomMagicEdgeValue !== 0) {
                 break; 
             }
-            if (i === 0 && bottomMagicEdgeValue === 0) {
+            if (j === 3 && bottomMagicEdgeValue === 0) {
                 playPiece.magicEdge.bottom.active = true;
                 playPiece.magicEdge.bottom.length++;
-                i = playPieceDisplay.length - 1; 
-                j++;
+                j = 0; 
+                i--;
             } else {
-                i--; 
+                j++; 
             }
         }
     }
 
     const draw = (piece, bool) => {
-        for (let i = 0; i < piece.display.length; i++) {
+        for (let i = 0; i < piece.display.length - piece.magicEdge.bottom.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
                     board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]

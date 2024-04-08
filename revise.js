@@ -109,19 +109,19 @@ document.addEventListener('DOMContentLoaded', function () {
     )
 
     const blank_piece = new Piece([[0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]],
-            'none',
-            [0,0]
-        )
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]],
+        'none',
+        [0, 0]
+    )
 
     const pieces = [i, o, s, z, l, j, t]
     let rightEdgeOfBoard = board[0].length - 1
     let leftEdgeOfBoard = 0
     let bottomEdgeOfBoard = board.length - 1
     let checkRightEdge = (element) => element === rightEdgeOfBoard
-    let checkLeftEdge = (element) => element === leftEdgeOfBoard  
+    let checkLeftEdge = (element) => element === leftEdgeOfBoard
     let checkBottomEdge = (element) => element === bottomEdgeOfBoard
     let playPiece
     let coordinatesOfFragementsOnBoard = []
@@ -132,45 +132,70 @@ document.addEventListener('DOMContentLoaded', function () {
         const randomNumberGenerater = () => {
             return Math.floor(Math.random() * pieces.length)
         }
-        const randomNumber = randomNumberGenerater()  
+        const randomNumber = randomNumberGenerater()
         const selectedPiece = pieces[randomNumber]
         playPiece = {
-                    display: selectedPiece.display,
-                    coordinates: selectedPiece.startingCoordinates,
-                    magicEdge: 
-                                {
-                                    right: 
-                                            { 
-                                                active: false, 
-                                                length: 0
-                                            },
-                                    left: 
-                                            { 
-                                                active: false,
-                                                length: 0
-                                            },
-                                    bottom: 
-                                            { 
-                                                active: false,
-                                                length: 0
-                                            }
-                                }
-                    }
+            display: selectedPiece.display,
+            coordinates: selectedPiece.startingCoordinates,
+            magicEdge:
+            {
+                right:
+                {
+                    active: false,
+                    length: 0
+                },
+                left:
+                {
+                    active: false,
+                    length: 0
+                },
+                bottom:
+                {
+                    active: false,
+                    length: 0
+                }
+            }
+        }
+        findMagicEdges(selectedPiece.display)
         draw(playPiece, true)
+    }
+    const findMagicEdges = (playPieceDisplay) => {
+        let i = 0;
+        let j = 1;
+        while (i < playPieceDisplay.length) {
+            const rightMagicEdgeValue = playPieceDisplay[i][playPieceDisplay[i].length - j];
+            if (rightMagicEdgeValue !== 0) {
+                console.log(rightMagicEdgeValue);
+                playPiece.magicEdge.right.active = false;
+                playPiece.magicEdge.right.length = 0;
+                break; 
+            }
+
+            if (i === 3 && rightMagicEdgeValue === 0) {
+                console.log('found one');
+                playPiece.magicEdge.right.active = true;
+                playPiece.magicEdge.right.length++;
+                i = 0; 
+                j++;
+            } else {
+                i++; 
+            }
+        }
     }
 
     const draw = (piece, bool) => {
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
-                board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
-                coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
+                    board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                    coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                     if (bool === false) {
-                        board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0 
+                        board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                     }
                 }
             }
         }
+        console.log(playPiece.magicEdge)
         edgeCheck()
         checkAroundFragments()
         checkBoardValues()
@@ -200,9 +225,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const checkAroundFragments = () => {
         coordinatesAroundFragments = {
-            right: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x + 1]),
-            left: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x - 1]),
-            bottom: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y + 1, x])
+            right: coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x + 1]),
+            left: coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x - 1]),
+            bottom: coordinatesOfFragementsOnBoard.map(([y, x]) => [y + 1, x])
         }
     }
 
@@ -215,16 +240,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.addEventListener('keydown', (event) => {
-    if (event.key === 'a' || event.key === 'A' ) {
-        left(movementPossibilities.left);
-    } else if (event.key === 'd' || event.key === 'D') {
-        right(movementPossibilities.right);
-    } else if (event.key === 's' || event.key === 'S') {
-        down(movementPossibilities.bottom);
-    } else if (event.key === 'w' || event.key === 'W') {
-        rotate();
-    }
-    
+        if (event.key === 'a' || event.key === 'A') {
+            left(movementPossibilities.left);
+        } else if (event.key === 'd' || event.key === 'D') {
+            right(movementPossibilities.right);
+        } else if (event.key === 's' || event.key === 'S') {
+            down(movementPossibilities.bottom);
+        } else if (event.key === 'w' || event.key === 'W') {
+            rotate();
+        }
+
     });
     spawnPiece();
 })

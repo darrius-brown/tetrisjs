@@ -215,21 +215,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const draw = (piece, bool) => {
-        for (let i = 0; i < piece.display.length - piece.magicEdge.bottom.length; i++) {
+        coordinatesOfFragementsOnBoard = []
+        for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
                     board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
-                    coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
+                    if (bool === true) {
+                        coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
+                    }
                     if (bool === false) {
                         board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                     }
                 }
             }
         }
-        edgeCheck()
-        checkAroundFragments()
-        checkBoardValues()
         if (bool === true) {
+            checkAroundFragments()
+            checkBoardValues()
+            edgeCheck()
             renderBoard()
         }
     };
@@ -244,11 +247,38 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true)
     }
 
+    const right = (canExecute) => {
+        if (!canExecute || edges.right) {
+            console.log('Unable to move right')
+            return
+        }
+        draw(playPiece, false)
+        playPiece.coordinates[0] += 1
+        draw(playPiece, true)
+    }
+
+    const left = (canExecute) => {
+        if (!canExecute || edges.left) {
+            console.log('Unable to move left')
+            return
+        }
+        draw(playPiece, false)
+        playPiece.coordinates[0] -= 1
+        draw(playPiece, true)
+    }
+
     const checkBoardValues = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
             const hasBlockage = coordinate.some(coords => {
-                console.log(coords[0])
                 if (coords[0] > board.length - 1) {
+                    return true
+                }
+
+                if (coords[1] > board[0].length - 1) {
+                    return true
+                }
+
+                if (coords[1] < 0) {
                     return true
                 }
                 return board[coords[0]][coords[1]] > 0
@@ -267,9 +297,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const edgeCheck = () => {
         edges = {
-            right: coordinatesOfFragementsOnBoard.some(checkRightEdge),
-            left: coordinatesOfFragementsOnBoard.some(checkLeftEdge),
-            bottom: coordinatesOfFragementsOnBoard.some(checkBottomEdge)
+            right: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === rightEdgeOfBoard),
+            left: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === leftEdgeOfBoard),
+            bottom: coordinatesOfFragementsOnBoard.some(fragment => fragment[0] === bottomEdgeOfBoard)
         }
     }
 

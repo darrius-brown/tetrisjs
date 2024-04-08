@@ -119,9 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const pieces = [i, o, s, z, l, j, t]
 
     let playPiece
-    let boardValues = []
     let coordinatesOfFragementsOnBoard = []
-    let coordinatesRightOfFragments = []
+    let coordinatesAroundFragments
+    let movementPossibilities = {}
 
     const spawnPiece = () => {
         const randomNumberGenerater = () => {
@@ -148,7 +148,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-        console.log(coordinatesOfFragementsOnBoard)
+        checkAroundFragments()
+        checkBoardValues()
+        console.log(movementPossibilities)
         if (bool === true) {
             renderBoard()
         }
@@ -160,19 +162,26 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true)
     }
 
-    const checkBoardValues = (coordinates) => {
-        for (i = 0; i < coordinates.length; i++) {
-            if (board[coordinates[0]][coordinates[1]] > 0) {
-                return false
-            }
-            return true
+    const checkBoardValues = () => {
+        Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
+            const hasNonZeroValue = coordinate.some(coords => {
+                console.log(direction)
+                console.log(board[coords[0]][coords[1]])
+                return board[coords[0]][coords[1]] > 0
+            });
+            movementPossibilities[direction] = !hasNonZeroValue;
+        });
+    }
+
+    const checkAroundFragments = () => {
+        coordinatesAroundFragments = {
+            right: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x + 1]),
+            left: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x - 1]),
+            bottom: coordinatesOfFragementsOnBoard.map(([y, x] )=> [y + 1, x])
         }
     }
 
-    const checkRight = () => {
-        coordinatesRightOfFragments = coordinatesOfFragementsOnBoard.map(([y, x] )=> [y, x + 1])
-        return checkBoardValues()
-    }
+    
 
     document.addEventListener('keydown', (event) => {
     if (event.key === 'a' || event.key === 'A' ) {

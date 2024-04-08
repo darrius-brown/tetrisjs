@@ -117,7 +117,12 @@ document.addEventListener('DOMContentLoaded', function () {
         )
 
     const pieces = [i, o, s, z, l, j, t]
-
+    let rightEdgeOfBoard = board[0].length - 1
+    let leftEdgeOfBoard = 0
+    let bottomEdgeOfBoard = board.length - 1
+    let checkRightEdge = (element) => element === rightEdgeOfBoard
+    let checkLeftEdge = (element) => element === leftEdgeOfBoard  
+    let checkBottomEdge = (element) => element === bottomEdgeOfBoard
     let playPiece
     let coordinatesOfFragementsOnBoard = []
     let coordinatesAroundFragments
@@ -131,7 +136,25 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedPiece = pieces[randomNumber]
         playPiece = {
                     display: selectedPiece.display,
-                    coordinates: selectedPiece.startingCoordinates
+                    coordinates: selectedPiece.startingCoordinates,
+                    magicEdge: 
+                                {
+                                    right: 
+                                            { 
+                                                active: false, 
+                                                length: 0
+                                            },
+                                    left: 
+                                            { 
+                                                active: false,
+                                                length: 0
+                                            },
+                                    bottom: 
+                                            { 
+                                                active: false,
+                                                length: 0
+                                            }
+                                }
                     }
         draw(playPiece, true)
     }
@@ -148,15 +171,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
+        edgeCheck()
         checkAroundFragments()
         checkBoardValues()
-        console.log(movementPossibilities)
         if (bool === true) {
             renderBoard()
         }
     };
 
-    const down = () => {
+    const down = (canExecute) => {
+        if (!canExecute || checkBottom) {
+            console.log('Unable to move down')
+            return
+        }
         draw(playPiece, false)
         playPiece.coordinates[1] += 1
         draw(playPiece, true)
@@ -164,12 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const checkBoardValues = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
-            const hasNonZeroValue = coordinate.some(coords => {
-                console.log(direction)
-                console.log(board[coords[0]][coords[1]])
+            const hasBlockage = coordinate.some(coords => {
                 return board[coords[0]][coords[1]] > 0
             });
-            movementPossibilities[direction] = !hasNonZeroValue;
+            movementPossibilities[direction] = !hasBlockage;
         });
     }
 
@@ -181,15 +206,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    
+    const edgeCheck = () => {
+        edges = {
+            right: coordinatesOfFragementsOnBoard.some(checkRightEdge),
+            left: coordinatesOfFragementsOnBoard.some(checkLeftEdge),
+            bottom: coordinatesOfFragementsOnBoard.some(checkBottomEdge)
+        }
+    }
 
     document.addEventListener('keydown', (event) => {
     if (event.key === 'a' || event.key === 'A' ) {
-        left();
+        left(movementPossibilities.left);
     } else if (event.key === 'd' || event.key === 'D') {
-        right();
+        right(movementPossibilities.right);
     } else if (event.key === 's' || event.key === 'S') {
-        down();
+        down(movementPossibilities.bottom);
     } else if (event.key === 'w' || event.key === 'W') {
         rotate();
     }

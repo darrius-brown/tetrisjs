@@ -226,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-        console.log(playPiece.magicEdge)
         edgeCheck()
         checkAroundFragments()
         checkBoardValues()
@@ -236,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const down = (canExecute) => {
-        if (!canExecute || checkBottom) {
+        if (!canExecute || edges.bottom) {
             console.log('Unable to move down')
             return
         }
@@ -248,6 +247,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkBoardValues = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
             const hasBlockage = coordinate.some(coords => {
+                console.log(coords[0])
+                if (coords[0] > board.length - 1) {
+                    return true
+                }
                 return board[coords[0]][coords[1]] > 0
             });
             movementPossibilities[direction] = !hasBlockage;

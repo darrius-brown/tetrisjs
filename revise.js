@@ -165,9 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
         while (i < playPieceDisplay.length) {
             const rightMagicEdgeValue = playPieceDisplay[i][playPieceDisplay[i].length - j];
             if (rightMagicEdgeValue !== 0) {
-                console.log(rightMagicEdgeValue);
-                playPiece.magicEdge.right.active = false;
-                playPiece.magicEdge.right.length = 0;
                 break; 
             }
 

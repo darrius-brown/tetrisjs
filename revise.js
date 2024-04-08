@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true)
     }
     const findMagicEdges = (playPieceDisplay) => {
+        //This block configures rightEdges
         let i = 0;
         let j = 1;
         while (i < playPieceDisplay.length) {
@@ -167,15 +168,47 @@ document.addEventListener('DOMContentLoaded', function () {
             if (rightMagicEdgeValue !== 0) {
                 break; 
             }
-
             if (i === 3 && rightMagicEdgeValue === 0) {
-                console.log('found one');
                 playPiece.magicEdge.right.active = true;
                 playPiece.magicEdge.right.length++;
                 i = 0; 
                 j++;
             } else {
                 i++; 
+            }
+        }
+        //This block configures leftEdges
+        i = 0;
+        j = 0;
+        while (i < playPieceDisplay.length) {
+            const leftMagicEdgeValue = playPieceDisplay[i][j];
+            if (leftMagicEdgeValue !== 0) {
+                break; 
+            }
+            if (i === 3 && leftMagicEdgeValue === 0) {
+                playPiece.magicEdge.left.active = true;
+                playPiece.magicEdge.left.length++;
+                i = 0; 
+                j++;
+            } else {
+                i++; 
+            }
+        }
+        //This block configures bottomEdges
+        i = playPieceDisplay.length - 1;
+        j = 0;
+        while (i > -1) {
+            const bottomMagicEdgeValue = playPieceDisplay[i][j];
+            if (bottomMagicEdgeValue !== 0) {
+                break; 
+            }
+            if (i === 0 && bottomMagicEdgeValue === 0) {
+                playPiece.magicEdge.bottom.active = true;
+                playPiece.magicEdge.bottom.length++;
+                i = playPieceDisplay.length - 1; 
+                j++;
+            } else {
+                i--; 
             }
         }
     }

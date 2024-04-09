@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let movementPossibilities = {}
 
     const spawnPiece = () => {
+        coordinatesOfFragementsOnBoard = []
         const randomNumberGenerater = () => {
             return Math.floor(Math.random() * pieces.length)
         }
@@ -156,63 +157,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-        findMagicEdges(selectedPiece.display)
+        // findMagicEdges(selectedPiece.display)
         draw(playPiece, true)
     }
 
-    const findMagicEdges = (playPieceDisplay) => {
-        //This block configures rightEdges
-        let i = 0;
-        let j = 1;
-        while (i < playPieceDisplay.length) {
-            const rightMagicEdgeValue = playPieceDisplay[i][playPieceDisplay[i].length - j];
-            if (rightMagicEdgeValue !== 0) {
-                break; 
-            }
-            if (i === 3 && rightMagicEdgeValue === 0) {
-                playPiece.magicEdge.right.active = true;
-                playPiece.magicEdge.right.length++;
-                i = 0; 
-                j++;
-            } else {
-                i++; 
-            }
+    const endPiece = () => {
+        console.log(coordinatesOfFragementsOnBoard)
+        for (let i = 0; i < coordinatesOfFragementsOnBoard.length; i++) {
+            board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]] = Math.abs(board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]])
+            console.log(board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]])
         }
-        //This block configures leftEdges
-        i = 0;
-        j = 0;
-        while (i < playPieceDisplay.length) {
-            const leftMagicEdgeValue = playPieceDisplay[i][j];
-            if (leftMagicEdgeValue !== 0) {
-                break; 
-            }
-            if (i === 3 && leftMagicEdgeValue === 0) {
-                playPiece.magicEdge.left.active = true;
-                playPiece.magicEdge.left.length++;
-                i = 0; 
-                j++;
-            } else {
-                i++; 
-            }
-        }
-        //This block configures bottomEdges
-        i = 3;
-        j = 0;
-        while (i > -1) {
-            const bottomMagicEdgeValue = playPieceDisplay[i][j];
-            if (bottomMagicEdgeValue !== 0) {
-                break; 
-            }
-            if (j === 3 && bottomMagicEdgeValue === 0) {
-                playPiece.magicEdge.bottom.active = true;
-                playPiece.magicEdge.bottom.length++;
-                j = 0; 
-                i--;
-            } else {
-                j++; 
-            }
-        }
+        renderBoard();
+        spawnPiece();
     }
+
+    
 
     const draw = (piece, bool) => {
         coordinatesOfFragementsOnBoard = []
@@ -239,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const down = (canExecute) => {
         if (!canExecute || edges.bottom) {
-            console.log('Unable to move down')
+            endPiece();
             return
         }
         draw(playPiece, false)
@@ -303,6 +262,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // setInterval(() => {
+    //     down(movementPossibilities.bottom);
+    // }, 1000);
+
     document.addEventListener('keydown', (event) => {
         if (event.key === 'a' || event.key === 'A') {
             left(movementPossibilities.left);
@@ -311,9 +274,63 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 's' || event.key === 'S') {
             down(movementPossibilities.bottom);
         } else if (event.key === 'w' || event.key === 'W') {
-            rotate();
+            endPiece();
         }
 
     });
     spawnPiece();
+
+    // const findMagicEdges = (playPieceDisplay) => {
+    //     //This block configures rightEdges
+    //     let i = 0;
+    //     let j = 1;
+    //     while (i < playPieceDisplay.length) {
+    //         const rightMagicEdgeValue = playPieceDisplay[i][playPieceDisplay[i].length - j];
+    //         if (rightMagicEdgeValue !== 0) {
+    //             break; 
+    //         }
+    //         if (i === 3 && rightMagicEdgeValue === 0) {
+    //             playPiece.magicEdge.right.active = true;
+    //             playPiece.magicEdge.right.length++;
+    //             i = 0; 
+    //             j++;
+    //         } else {
+    //             i++; 
+    //         }
+    //     }
+    //     //This block configures leftEdges
+    //     i = 0;
+    //     j = 0;
+    //     while (i < playPieceDisplay.length) {
+    //         const leftMagicEdgeValue = playPieceDisplay[i][j];
+    //         if (leftMagicEdgeValue !== 0) {
+    //             break; 
+    //         }
+    //         if (i === 3 && leftMagicEdgeValue === 0) {
+    //             playPiece.magicEdge.left.active = true;
+    //             playPiece.magicEdge.left.length++;
+    //             i = 0; 
+    //             j++;
+    //         } else {
+    //             i++; 
+    //         }
+    //     }
+    //     //This block configures bottomEdges
+    //     i = 3;
+    //     j = 0;
+    //     while (i > -1) {
+    //         const bottomMagicEdgeValue = playPieceDisplay[i][j];
+    //         if (bottomMagicEdgeValue !== 0) {
+    //             break; 
+    //         }
+    //         if (j === 3 && bottomMagicEdgeValue === 0) {
+    //             playPiece.magicEdge.bottom.active = true;
+    //             playPiece.magicEdge.bottom.length++;
+    //             j = 0; 
+    //             i--;
+    //         } else {
+    //             j++; 
+    //         }
+    //     }
+    // }
 })

@@ -120,9 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let rightEdgeOfBoard = board[0].length - 1
     let leftEdgeOfBoard = 0
     let bottomEdgeOfBoard = board.length - 1
-    let checkRightEdge = (element) => element === rightEdgeOfBoard
-    let checkLeftEdge = (element) => element === leftEdgeOfBoard
-    let checkBottomEdge = (element) => element === bottomEdgeOfBoard
     let playPiece
     let coordinatesOfFragementsOnBoard = []
     let coordinatesAroundFragments
@@ -133,31 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const randomNumberGenerater = () => {
             return Math.floor(Math.random() * pieces.length)
         }
-        const randomNumber = randomNumberGenerater()
-        const selectedPiece = pieces[randomNumber]
+        let randomNumber = randomNumberGenerater()
+        let selectedPiece = pieces[randomNumber]
         playPiece = {
             display: selectedPiece.display,
-            coordinates: selectedPiece.startingCoordinates,
-            magicEdge:
-            {
-                right:
-                {
-                    active: false,
-                    length: 0
-                },
-                left:
-                {
-                    active: false,
-                    length: 0
-                },
-                bottom:
-                {
-                    active: false,
-                    length: 0
-                }
-            }
-        }
-        // findMagicEdges(selectedPiece.display)
+            coordinates: selectedPiece.startingCoordinates}
         draw(playPiece, true, false)
     }
 
@@ -167,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const draw = (piece, bool, endingPiece) => {
+        console.log()
         coordinatesOfFragementsOnBoard = []
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
@@ -188,13 +166,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (bool === true) {
             checkAroundFragments()
             checkBoardValues()
-            edgeCheck()
             renderBoard()
         }
     };
 
     const down = (canExecute) => {
-        if (!canExecute || edges.bottom) {
+        if (!canExecute) {
             endPiece();
             return
         }
@@ -204,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const right = (canExecute) => {
-        if (!canExecute || edges.right) {
+        if (!canExecute) {
             console.log('Unable to move right')
             return
         }
@@ -214,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const left = (canExecute) => {
-        if (!canExecute || edges.left) {
+        if (!canExecute) {
             console.log('Unable to move left')
             return
         }
@@ -226,15 +203,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkBoardValues = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
             const hasBlockage = coordinate.some(coords => {
-                if (coords[0] > board.length - 1) {
+                if (coords[0] > bottomEdgeOfBoard) {
                     return true
                 }
 
-                if (coords[1] > board[0].length - 1) {
+                if (coords[1] > rightEdgeOfBoard) {
                     return true
                 }
 
-                if (coords[1] < 0) {
+                if (coords[1] < leftEdgeOfBoard) {
                     return true
                 }
                 return board[coords[0]][coords[1]] > 0
@@ -251,13 +228,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const edgeCheck = () => {
-        edges = {
-            right: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === rightEdgeOfBoard),
-            left: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === leftEdgeOfBoard),
-            bottom: coordinatesOfFragementsOnBoard.some(fragment => fragment[0] === bottomEdgeOfBoard)
-        }
-    }
+    // const edgeCheck = () => {
+    //     edges = {
+    //         right: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === rightEdgeOfBoard),
+    //         left: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === leftEdgeOfBoard),
+    //         bottom: coordinatesOfFragementsOnBoard.some(fragment => fragment[0] === bottomEdgeOfBoard)
+    //     }
+    // }
 
     // setInterval(() => {
     //     down(movementPossibilities.bottom);
@@ -277,57 +254,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     spawnPiece();
 
-    // const findMagicEdges = (playPieceDisplay) => {
-    //     //This block configures rightEdges
-    //     let i = 0;
-    //     let j = 1;
-    //     while (i < playPieceDisplay.length) {
-    //         const rightMagicEdgeValue = playPieceDisplay[i][playPieceDisplay[i].length - j];
-    //         if (rightMagicEdgeValue !== 0) {
-    //             break; 
-    //         }
-    //         if (i === 3 && rightMagicEdgeValue === 0) {
-    //             playPiece.magicEdge.right.active = true;
-    //             playPiece.magicEdge.right.length++;
-    //             i = 0; 
-    //             j++;
-    //         } else {
-    //             i++; 
-    //         }
-    //     }
-    //     //This block configures leftEdges
-    //     i = 0;
-    //     j = 0;
-    //     while (i < playPieceDisplay.length) {
-    //         const leftMagicEdgeValue = playPieceDisplay[i][j];
-    //         if (leftMagicEdgeValue !== 0) {
-    //             break; 
-    //         }
-    //         if (i === 3 && leftMagicEdgeValue === 0) {
-    //             playPiece.magicEdge.left.active = true;
-    //             playPiece.magicEdge.left.length++;
-    //             i = 0; 
-    //             j++;
-    //         } else {
-    //             i++; 
-    //         }
-    //     }
-    //     //This block configures bottomEdges
-    //     i = 3;
-    //     j = 0;
-    //     while (i > -1) {
-    //         const bottomMagicEdgeValue = playPieceDisplay[i][j];
-    //         if (bottomMagicEdgeValue !== 0) {
-    //             break; 
-    //         }
-    //         if (j === 3 && bottomMagicEdgeValue === 0) {
-    //             playPiece.magicEdge.bottom.active = true;
-    //             playPiece.magicEdge.bottom.length++;
-    //             j = 0; 
-    //             i--;
-    //         } else {
-    //             j++; 
-    //         }
-    //     }
-    // }
 })

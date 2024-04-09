@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let movementPossibilities = {}
 
     const spawnPiece = () => {
-        coordinatesOfFragementsOnBoard = []
+        movementPossibilities = {}
         const randomNumberGenerater = () => {
             return Math.floor(Math.random() * pieces.length)
         }
@@ -158,27 +158,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         // findMagicEdges(selectedPiece.display)
-        draw(playPiece, true)
+        draw(playPiece, true, false)
     }
 
     const endPiece = () => {
-        console.log(coordinatesOfFragementsOnBoard)
-        for (let i = 0; i < coordinatesOfFragementsOnBoard.length; i++) {
-            board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]] = Math.abs(board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]])
-            console.log(board[coordinatesOfFragementsOnBoard[i][0]][coordinatesOfFragementsOnBoard[i][1]])
-        }
-        renderBoard();
+        draw(playPiece, true, true);
         spawnPiece();
     }
 
-    
-
-    const draw = (piece, bool) => {
+    const draw = (piece, bool, endingPiece) => {
         coordinatesOfFragementsOnBoard = []
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
-                    board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                    if (endingPiece === true) {
+                        board[piece.coordinates[1] + i][piece.coordinates[0] + j] = Math.abs(piece.display[i][j]) 
+                    } else {
+                        board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                    } 
                     if (bool === true) {
                         coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                     }
@@ -201,9 +198,9 @@ document.addEventListener('DOMContentLoaded', function () {
             endPiece();
             return
         }
-        draw(playPiece, false)
+        draw(playPiece, false, false)
         playPiece.coordinates[1] += 1
-        draw(playPiece, true)
+        draw(playPiece, true, false)
     }
 
     const right = (canExecute) => {
@@ -211,9 +208,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Unable to move right')
             return
         }
-        draw(playPiece, false)
+        draw(playPiece, false, false)
         playPiece.coordinates[0] += 1
-        draw(playPiece, true)
+        draw(playPiece, true, false)
     }
 
     const left = (canExecute) => {
@@ -221,9 +218,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Unable to move left')
             return
         }
-        draw(playPiece, false)
+        draw(playPiece, false, false)
         playPiece.coordinates[0] -= 1
-        draw(playPiece, true)
+        draw(playPiece, true, false)
     }
 
     const checkBoardValues = () => {

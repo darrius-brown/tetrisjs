@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const Piece = class {
+        constructor(display, color, startingCoordinates) {
+            this.display = display
+            this.color = color
+            this.startingCoordinates = startingCoordinates
+        }
+    }
+
     board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -43,14 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     renderBoard();
-
-    const Piece = class {
-        constructor(display, color, startingCoordinates) {
-            this.display = display
-            this.color = color
-            this.startingCoordinates = startingCoordinates
-        }
-    }
 
     const i = new Piece([[0, -1, 0, 0],
     [0, -1, 0, 0],
@@ -108,14 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
         [2, -1]
     )
 
-    const blank_piece = new Piece([[0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]],
-        'none',
-        [0, 0]
-    )
-
     const pieces = [i, o, s, z, l, j, t]
     let rightEdgeOfBoard = board[0].length - 1
     let leftEdgeOfBoard = 0
@@ -131,10 +123,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return Math.floor(Math.random() * pieces.length)
         }
         let randomNumber = randomNumberGenerater()
-        let selectedPiece = pieces[randomNumber]
         playPiece = {
-            display: selectedPiece.display,
-            coordinates: selectedPiece.startingCoordinates}
+            display: pieces[randomNumber].display.slice(),
+            coordinates: pieces[randomNumber].startingCoordinates.slice()}
         draw(playPiece, true, false)
     }
 
@@ -144,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const draw = (piece, bool, endingPiece) => {
-        console.log()
         coordinatesOfFragementsOnBoard = []
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
@@ -165,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (bool === true) {
             checkAroundFragments()
-            checkBoardValues()
+            checkMovementPossibilities()
             renderBoard()
         }
     };
@@ -200,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true, false)
     }
 
-    const checkBoardValues = () => {
+    const checkMovementPossibilities = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
             const hasBlockage = coordinate.some(coords => {
                 if (coords[0] > bottomEdgeOfBoard) {
@@ -228,14 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // const edgeCheck = () => {
-    //     edges = {
-    //         right: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === rightEdgeOfBoard),
-    //         left: coordinatesOfFragementsOnBoard.some(fragment => fragment[1] === leftEdgeOfBoard),
-    //         bottom: coordinatesOfFragementsOnBoard.some(fragment => fragment[0] === bottomEdgeOfBoard)
-    //     }
-    // }
-
     // setInterval(() => {
     //     down(movementPossibilities.bottom);
     // }, 1000);
@@ -248,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 's' || event.key === 'S') {
             down(movementPossibilities.bottom);
         } else if (event.key === 'w' || event.key === 'W') {
-            endPiece();
+            spawnPiece();
         }
 
     });

@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const boardContainer = document.getElementById('board-container');
     
-
+    const colors = ['blue', 'yellow', 'red', 'green', 'orange', 'pink', 'purple']
     const renderBoard = () => {
         boardContainer.innerHTML = '';
 
@@ -44,7 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.innerText = board[row][col];
-                cell.style.backgroundColor = 'grey'
+                cell.style.color = 'transparent'
+                cell.style.backgroundColor = 'black'
+                if (board[row][col] !== 0) {
+                    cell.style.backgroundColor = colors[(Math.abs(board[row][col]) - 1)];
+                }
                 rowElement.appendChild(cell);
             }
 
@@ -111,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     )
 
     const pieces = [i, o, s, z, l, j, t]
+    let movementSpeed = 1000
     let rightEdgeOfBoard = board[0].length - 1
     let leftEdgeOfBoard = 0
     let bottomEdgeOfBoard = board.length - 1
@@ -196,6 +201,12 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true, false)
     }
 
+    const fastDown = () => {
+        while (movementPossibilities.bottom === true) {
+            down(movementPossibilities.bottom)
+        }
+    }
+
     const right = (canExecute) => {
         if (!canExecute) {
             return
@@ -261,9 +272,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // setInterval(() => {
-    //     down(movementPossibilities.bottom);
-    // }, 1000);
+    setInterval(() => {
+        down(movementPossibilities.bottom);
+    }, movementSpeed);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'a' || event.key === 'A') {
@@ -271,7 +282,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 'd' || event.key === 'D') {
             right(movementPossibilities.right);
         } else if (event.key === 's' || event.key === 'S') {
-            down(movementPossibilities.bottom);
+            fastDown();
+            endPiece();
         } else if (event.key === 'w' || event.key === 'W') {
             rotate();
         }

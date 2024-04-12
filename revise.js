@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const Piece = class {
-        constructor(display, color, startingCoordinates, value) {
+        constructor(display, color, startingCoordinates) {
             this.display = display
             this.color = color
             this.startingCoordinates = startingCoordinates
-            this.value = value
         }
     }
 
@@ -58,8 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -1, 0, 0],
     [0, -1, 0, 0]],
         'blue',
-        [3, 0],
-        -1
+        [3, 0]
     )
 
     const o = new Piece([[0, 0, 0, 0],
@@ -67,8 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -2, -2, 0],
     [0, 0, 0, 0]],
         'yellow',
-        [3, -1],
-        -2
+        [3, -1]
     )
 
     const s = new Piece([[0, 0, 0, 0],
@@ -76,8 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -3, -3, 0],
     [0, 0, 0, 0]],
         'red',
-        [3, -1],
-        -3
+        [3, -1]
     )
 
     const z = new Piece([[0, 0, 0, 0],
@@ -85,8 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -4, -4],
     [0, 0, 0, 0]],
         'green',
-        [3, -1],
-        -4
+        [3, -1]
     )
 
     const l = new Piece([[0, -5, 0, 0],
@@ -94,8 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -5, -5, 0],
     [0, 0, 0, 0]],
         'orange',
-        [3, 0],
-        -5
+        [3, 0]
     )
 
     const j = new Piece([[0, 0, -6, 0],
@@ -103,8 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -6, -6, 0],
     [0, 0, 0, 0]],
         'pink',
-        [3, 0],
-        -6
+        [3, 0]
     )
 
     const t = new Piece([[0, 0, 0, 0],
@@ -112,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -7, 0],
     [0, 0, 0, 0]],
         'purple',
-        [2, -1],
-        -7
+        [2, -1]
     )
 
     const pieces = [i, o, s, z, l, j, t]
@@ -133,8 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let randomNumber = randomNumberGenerater()
         playPiece = {
             display: pieces[randomNumber].display.slice(),
-            coordinates: pieces[randomNumber].startingCoordinates.slice(),
-            value: pieces[randomNumber].value
+            coordinates: pieces[randomNumber].startingCoordinates.slice() 
         },
 
             draw(playPiece, true, false)
@@ -146,20 +137,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const draw = (piece, bool, endingPiece) => {
-  
         const boardPrep = () => {
             coordinatesOfFragementsOnBoard = []
             outerloop: for (let i = 0; i < piece.display.length; i++) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
-                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {s
+                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {
+                            for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
+                                board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
+                            }
                             piece.coordinates[0] -= 1
-                            boardPrep()
+                            boardPrep();
                             break outerloop;
                         }
-                        if (piece.coordinates[0] + j < leftEdgeOfBoard) {s
+                        if (piece.coordinates[0] + j < leftEdgeOfBoard) {
+                            for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
+                                board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
+                            }
                             piece.coordinates[0] += 1
-                            boardPrep()
+                            boardPrep();
                             break outerloop;
                         }
                         if (endingPiece === true) {
@@ -174,21 +170,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                         }
                     }
+                    console.log(coordinatesOfFragementsOnBoard)
                 }
             }    
         }
 
         boardPrep()
-
-        // isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > rightEdgeOfBoard);
-        isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x < leftEdgeOfBoard);
-
-        // if (isOverlapped === true) {
-        //     console.log('before', piece.coordinates[0])
-        //     let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
-        //     piece.coordinates[0] -= (highestX - rightEdgeOfBoard)
-        //     boardPrep()
-        // }
 
         if (bool === true) {
             checkAroundFragments()

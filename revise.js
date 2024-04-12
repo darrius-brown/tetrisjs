@@ -136,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const draw = (piece, bool, endingPiece) => {
         coordinatesOfFragementsOnBoard = []
+        let isOverlapped
+        let isUnderlapped
         for (let i = 0; i < piece.display.length; i++) {
             for (let j = 0; j < piece.display[i].length; j++) {
                 if (piece.display[i][j] < 0) {
@@ -153,10 +155,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
+
+        isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 9);
+        isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 0);
+        console.log(isOverlapped)
+        console.log(piece.coordinates)
+        if (isOverlapped === true) {
+            console.log('found overlap');
+            let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
+            let newCoordinates = playPiece.coordinates.map(([y, x]) => [y, x - highestX]);
+            playPiece.coordinates = newCoordinates;
+        }
+        
+        if (isUnderlapped === true) {
+            console.log('found underlap');
+            let lowestX = coordinatesOfFragementsOnBoard.reduce((lowest, [, x]) => Math.min(lowest, x), Infinity);
+            let newCoordinates = playPiece.coordinates.map(([y, x]) => [y, x - lowestX]);
+            playPiece.coordinates = newCoordinates;
+        }
         if (bool === true) {
             checkAroundFragments()
             checkMovementPossibilities()
             renderBoard()
+            console.log(coordinatesOfFragementsOnBoard)
         }
     };
 
@@ -189,6 +210,66 @@ document.addEventListener('DOMContentLoaded', function () {
         playPiece.coordinates[0] -= 1
         draw(playPiece, true, false)
     }
+
+    const rotate = () => {
+        draw(playPiece, false, false)
+        let transposedPiece = playPiece.display[0].map((_, colIndex) => playPiece.display.map(row => row[colIndex]));
+        let rotatedPiece = transposedPiece.map(row => row.reverse());
+        let isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 9);
+        let isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 0);
+        console.log(isOverlapped)
+        if (isOverlapped === true) {
+            console.log('found overlap')
+            let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [y, x]) => {
+                return x > highest ? x : highest;
+            }, -Infinity);
+            let newcoordinates = playPiece.coordinates.map(([y, x]) => [y, x - highestX])
+            playPiece.coordinates = newcoordinates
+        }
+
+        if (isUnderlapped) {
+            console.log('found underlap')
+            const lowestX = coordinatesOfFragementsOnBoard.reduce((lowest, [y, x]) => {
+                return x < lowest ? x : lowest;
+            }, -Infinity);
+            let newcoordinates = playPiece.coordinates.map(([y, x]) => [y, x - lowestX])
+            playPiece.coordinates = newcoordinates
+        }
+        // KEY coordinatesOfFragementsOnBoard
+        // if (coors[0] >= 6) {
+        //     for (const i in playPiece) {
+        //         playIndex = playPiece[i].findLastIndex(findPiece)
+        //         rotateIndex = rotatedPiece[i].findLastIndex(findPiece)
+        //         if (playIndex > rightPieceCheck) {
+        //             rightPieceCheck = playIndex
+        //         }
+    
+        //         if(rotateIndex > rightRotatePieceCheck) {
+        //             rightRotatePieceCheck = rotateIndex
+        //         }
+        //     }
+        //     rightRotateOverlap = Math.abs(rightPieceCheck - rightRotatePieceCheck)
+        //     coors[0] = coors[0] - rightRotateOverlap
+        // }
+    
+        // if (coors[0] <= 0) {
+        //     for (const i in playPiece) {
+        //         playIndex =playPiece[i].findIndex(findPiece)
+        //         rotateIndex = rotatedPiece[i].findIndex(findPiece)
+        //         if (playIndex > leftPieceCheck) {
+        //             leftPieceCheck = playIndex
+        //         }
+        //         if(rotateIndex > leftRotatePieceCheck) {
+        //             leftRotatePieceCheck = rotateIndex
+        //         }
+        //     }
+        //     leftRotateOverlap = Math.abs(leftPieceCheck - leftRotatePieceCheck)
+        //     coors[0] = coors[0] + leftRotateOverlap
+        // }   
+    
+        playPiece.display = rotatedPiece;
+        draw(playPiece, true, false);
+    }  
 
     const checkMovementPossibilities = () => {
         Object.entries(coordinatesAroundFragments).forEach(([direction, coordinate]) => {
@@ -230,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 's' || event.key === 'S') {
             down(movementPossibilities.bottom);
         } else if (event.key === 'w' || event.key === 'W') {
-            spawnPiece();
+            rotate();
         }
 
     });

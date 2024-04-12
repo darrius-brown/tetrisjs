@@ -147,77 +147,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const draw = (piece, bool, endingPiece) => {
   
-        // const boardPrep = () => {
-        //     coordinatesOfFragementsOnBoard = []
-        //     for (let i = 0; i < piece.display.length; i++) {
-        //         for (let j = 0; j < piece.display[i].length; j++) {
-        //             if (piece.display[i][j] < 0) {
-        //                 if (endingPiece === true) {
-        //                     board[piece.coordinates[1] + i][piece.coordinates[0] + j] = Math.abs(piece.display[i][j])
-        //                 } else {
-        //                     board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
-        //                 }
-        //                 if (bool === true) {
-        //                     coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
-        //                 }
-        //                 if (bool === false) {
-        //                     board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        const boardPrep2 = () => {
-            let isOverlapped
-            let isUnderlapped
-            
-            const placeCoordinates = (coors) => {
-                if (bool === false) {
-                    board[coors[0]][coors[1]] = 0
-                } if (endingPiece === true) {
-                    board[coors[0]][coors[1]] = Math.abs(piece.value)
-                } else {
-                    board[coors[0]][coors[1]] = piece.value
-                }
-            }
-
+        const boardPrep = () => {
             coordinatesOfFragementsOnBoard = []
-            for (let i = 0; i < piece.display.length; i++) {
+            outerloop: for (let i = 0; i < piece.display.length; i++) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
-                        coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
+                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {
+                            piece.coordinates[0] -= 1
+                            boardPrep()
+                            break outerloop;
+                        }
+                        if (endingPiece === true) {
+                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = Math.abs(piece.display[i][j])
+                        } else {
+                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
+                        }
+                        if (bool === true) {
+                            coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
+                        }
+                        if (bool === false) {
+                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
+                        }
                     }
                 }
-            }
-            isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > rightEdgeOfBoard);
-            isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x < leftEdgeOfBoard);
-            if (isOverlapped === true) {
-                let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
-                shiftLeftCoordinates = coordinatesOfFragementsOnBoard.map(([y, x]) => [y, highestX - rightEdgeOfBoard])
-                console.log(shiftLeftCoordinates)
-                shiftLeftCoordinates.forEach(coors => placeCoordinates(coors));
-            } else {
-                coordinatesOfFragementsOnBoard.forEach(coors => placeCoordinates(coors));
-            } 
+            }    
         }
-        boardPrep2()
+
+        boardPrep()
 
         // isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > rightEdgeOfBoard);
-        // isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x < leftEdgeOfBoard);
-        // if (isOverlapped === true) {
-        //     console.log('found overlap');
-        //     console.log(playPiece.coordinates)
-        //     let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
-        //     playPiece.coordinates[0] = playPiece.coordinates[0] - (highestX - playPiece.coordinates[0])
-        //     console.log(playPiece.coordinates)
-        //     boardPrep()
-        // }
+        isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x < leftEdgeOfBoard);
 
-        // if (isUnderlapped === true) {
-        //     console.log('found underlap');
-        //     let lowestX = coordinatesOfFragementsOnBoard.reduce((lowest, [, x]) => Math.min(lowest, x), Infinity);
-        //     playPiece.coordinates[1] = playPiece.coordinates[1] - (lowestX - playPiece.coordinates[1])
+        // if (isOverlapped === true) {
+        //     console.log('before', piece.coordinates[0])
+        //     let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
+        //     piece.coordinates[0] -= (highestX - rightEdgeOfBoard)
         //     boardPrep()
         // }
 
@@ -262,38 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, false, false)
         let transposedPiece = playPiece.display[0].map((_, colIndex) => playPiece.display.map(row => row[colIndex]));
         let rotatedPiece = transposedPiece.map(row => row.reverse());
-        // KEY coordinatesOfFragementsOnBoard
-        // if (coors[0] >= 6) {
-        //     for (const i in playPiece) {
-        //         playIndex = playPiece[i].findLastIndex(findPiece)
-        //         rotateIndex = rotatedPiece[i].findLastIndex(findPiece)
-        //         if (playIndex > rightPieceCheck) {
-        //             rightPieceCheck = playIndex
-        //         }
-
-        //         if(rotateIndex > rightRotatePieceCheck) {
-        //             rightRotatePieceCheck = rotateIndex
-        //         }
-        //     }
-        //     rightRotateOverlap = Math.abs(rightPieceCheck - rightRotatePieceCheck)
-        //     coors[0] = coors[0] - rightRotateOverlap
-        // }
-
-        // if (coors[0] <= 0) {
-        //     for (const i in playPiece) {
-        //         playIndex =playPiece[i].findIndex(findPiece)
-        //         rotateIndex = rotatedPiece[i].findIndex(findPiece)
-        //         if (playIndex > leftPieceCheck) {
-        //             leftPieceCheck = playIndex
-        //         }
-        //         if(rotateIndex > leftRotatePieceCheck) {
-        //             leftRotatePieceCheck = rotateIndex
-        //         }
-        //     }
-        //     leftRotateOverlap = Math.abs(leftPieceCheck - leftRotatePieceCheck)
-        //     coors[0] = coors[0] + leftRotateOverlap
-        // }   
-
         playPiece.display = rotatedPiece;
         draw(playPiece, true, false);
     }

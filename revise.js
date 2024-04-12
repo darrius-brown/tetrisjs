@@ -157,22 +157,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         isOverlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 9);
-        isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x > 0);
+        isUnderlapped = coordinatesOfFragementsOnBoard.some(([y, x]) => x < 0);
         console.log(isOverlapped)
         console.log(piece.coordinates)
         if (isOverlapped === true) {
             console.log('found overlap');
             let highestX = coordinatesOfFragementsOnBoard.reduce((highest, [, x]) => Math.max(highest, x), -Infinity);
-            let newCoordinates = playPiece.coordinates.map(([y, x]) => [y, x - highestX]);
-            playPiece.coordinates = newCoordinates;
+            playPiece.coordinates[1] = playPiece.coordinates[1] - (highestX - playPiece.coordinates[1]) 
         }
         
         if (isUnderlapped === true) {
             console.log('found underlap');
             let lowestX = coordinatesOfFragementsOnBoard.reduce((lowest, [, x]) => Math.min(lowest, x), Infinity);
-            let newCoordinates = playPiece.coordinates.map(([y, x]) => [y, x - lowestX]);
-            playPiece.coordinates = newCoordinates;
+            playPiece.coordinates[1] = playPiece.coordinates[1] - (lowestX - playPiece.coordinates[1]) 
         }
+        
         if (bool === true) {
             checkAroundFragments()
             checkMovementPossibilities()

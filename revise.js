@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const endPiece = () => {
         draw(playPiece, true, true);
+        clearRows();
         spawnPiece();
     }
 
@@ -170,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                         }
                     }
-                    console.log(coordinatesOfFragementsOnBoard)
                 }
             }    
         }
@@ -196,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const right = (canExecute) => {
         if (!canExecute) {
-            console.log('Unable to move right')
             return
         }
         draw(playPiece, false, false)
@@ -206,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const left = (canExecute) => {
         if (!canExecute) {
-            console.log('Unable to move left')
             return
         }
         draw(playPiece, false, false)
@@ -247,6 +245,17 @@ document.addEventListener('DOMContentLoaded', function () {
             right: coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x + 1]),
             left: coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x - 1]),
             bottom: coordinatesOfFragementsOnBoard.map(([y, x]) => [y + 1, x])
+        }
+    }
+
+    const clearRows = () => {
+        for (let i = 0; i < board.length; i++) {
+            let clearable = board[i].every(num => num > 0)
+            if (clearable === true) {
+                index = board.indexOf(i)
+                board.splice(index, 1)   
+                board.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) 
+            }
         }
     }
 

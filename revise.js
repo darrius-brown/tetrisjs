@@ -152,8 +152,13 @@ document.addEventListener('DOMContentLoaded', function () {
             outerloop: for (let i = 0; i < piece.display.length; i++) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
-                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {
+                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {s
                             piece.coordinates[0] -= 1
+                            boardPrep()
+                            break outerloop;
+                        }
+                        if (piece.coordinates[0] + j < leftEdgeOfBoard) {s
+                            piece.coordinates[0] += 1
                             boardPrep()
                             break outerloop;
                         }

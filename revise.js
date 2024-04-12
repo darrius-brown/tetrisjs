@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const boardContainer = document.getElementById('board-container');
+    
 
     const renderBoard = () => {
         boardContainer.innerHTML = '';
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.innerText = board[row][col];
+                cell.style.backgroundColor = 'grey'
                 rowElement.appendChild(cell);
             }
 

@@ -59,17 +59,17 @@ document.addEventListener('DOMContentLoaded', function () {
     renderBoard();
 
     const i = new Piece([[0, -1, 0, 0],
-    [0, -1, 0, 0],
-    [0, -1, 0, 0],
-    [0, -1, 0, 0]],
+                        [0, -1, 0, 0],
+                        [0, -1, 0, 0],
+                        [0, -1, 0, 0]],
         'blue',
         [3, 0]
     )
 
     const o = new Piece([[0, 0, 0, 0],
-    [0, -2, -2, 0],
-    [0, -2, -2, 0],
-    [0, 0, 0, 0]],
+                        [0, -2, -2, 0],
+                        [0, -2, -2, 0],
+                        [0, 0, 0, 0]],
         'yellow',
         [3, -1]
     )
@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', function () {
     )
 
     const t = new Piece([[0, 0, 0, 0],
-    [0, -7, -7, -7],
-    [0, 0, -7, 0],
-    [0, 0, 0, 0]],
+                        [0, -7, -7, -7],
+                        [0, 0, -7, 0],
+                        [0, 0, 0, 0]],
         'purple',
         [2, -1]
     )
@@ -281,11 +281,13 @@ document.addEventListener('DOMContentLoaded', function () {
             left(movementPossibilities.left);
         } else if (event.key === 'd' || event.key === 'D') {
             right(movementPossibilities.right);
-        } else if (event.key === 's' || event.key === 'S') {
+        } else if (event.key === 'w' || event.key === 'W') {
             fastDown();
             endPiece();
-        } else if (event.key === 'w' || event.key === 'W') {
+        } else if (event.key === 'a' || event.key === 'A' || event.key === 'd' || event.key === 'D') {
             rotate();
+        } else if (event.key === 's' || event.key === 'S') {
+            down();
         }
 
     });

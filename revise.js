@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 'w' || event.key === 'W') {
             fastDown();
             endPiece();
-        } else if (event.key === 'a' || event.key === 'A' || event.key === 'd' || event.key === 'D') {
+        } else if (event.key === 'e' || event.key === 'E' || event.key === 'q' || event.key === 'Q') {
             rotate();
         } else if (event.key === 's' || event.key === 'S') {
             down();

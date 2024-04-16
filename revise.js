@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         [0, -1, 0, 0],
                         [0, -1, 0, 0]],
         'blue',
-        [3, 0]
+        [3, -3]
     )
 
     const o = new Piece([[0, 0, 0, 0],
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         [0, -2, -2, 0],
                         [0, 0, 0, 0]],
         'yellow',
-        [3, -1]
+        [3, -2]
     )
 
     const s = new Piece([[0, 0, 0, 0],
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -3, -3, 0],
     [0, 0, 0, 0]],
         'red',
-        [3, -1]
+        [3, -2]
     )
 
     const z = new Piece([[0, 0, 0, 0],
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -4, -4],
     [0, 0, 0, 0]],
         'green',
-        [3, -1]
+        [3, -2]
     )
 
     const l = new Piece([[0, -5, 0, 0],
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -5, -5, 0],
     [0, 0, 0, 0]],
         'orange',
-        [3, 0]
+        [3, -2]
     )
 
     const j = new Piece([[0, 0, -6, 0],
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -6, -6, 0],
     [0, 0, 0, 0]],
         'pink',
-        [3, 0]
+        [3, -2]
     )
 
     const t = new Piece([[0, 0, 0, 0],
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         [0, 0, -7, 0],
                         [0, 0, 0, 0]],
         'purple',
-        [2, -1]
+        [2, -2]
     )
 
     const pieces = [i, o, s, z, l, j, t]
@@ -146,8 +146,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const draw = (piece, bool, endingPiece) => {
         const boardPrep = () => {
+            if (piece.coordinates[1] < 0) {
+                topOfBoard = Math.abs(piece.coordinates[1])
+                console.log('top of board increase')
+                console.log(topOfBoard)
+            } else {
+                topOfBoard = 0
+            }
             coordinatesOfFragementsOnBoard = []
-            outerloop: for (let i = 0; i < piece.display.length; i++) {
+            outerloop: for (let i = piece.display.length - 1; i >= topOfBoard; i--) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
                         if (piece.coordinates[0] + j > rightEdgeOfBoard) {
@@ -175,11 +182,16 @@ document.addEventListener('DOMContentLoaded', function () {
                             coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                         }
                         if (bool === false) {
-                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
+                            console.log(piece.coordinates)                           
+                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0                             
                         }
                     }
                 }
-            }    
+                let isOnTopOfBoard = checkIfFragmentIsOnTopOFBoard()
+                    if (isOnTopOfBoard === true) {
+                        break outerloop;
+                    }
+            } 
         }
 
         boardPrep()
@@ -188,6 +200,8 @@ document.addEventListener('DOMContentLoaded', function () {
             checkAroundFragments()
             checkMovementPossibilities()
             renderBoard()
+            console.log(coordinatesAroundFragments)
+            console.log(coordinatesOfFragementsOnBoard)
         }
     };
 
@@ -197,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
         draw(playPiece, false, false)
+        console.log('blank drawn')
         playPiece.coordinates[1] += 1
         draw(playPiece, true, false)
     }
@@ -261,12 +276,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    const checkIfFragmentIsOnTopOFBoard = () => {
+        return coordinatesOfFragementsOnBoard.some(([y, x]) => y === 0);
+    }
+
     const clearRows = () => {
-        for (let i = 0; i < board.length; i++) {
+        for (let i = board.length - 1; i >= 0; i--) {
             let clearable = board[i].every(num => num > 0)
             if (clearable === true) {
-                index = board.indexOf(i)
-                board.splice(index, 1)   
+                board.splice(i, 1)   
                 board.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) 
             }
         }
@@ -287,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (event.key === 'e' || event.key === 'E' || event.key === 'q' || event.key === 'Q') {
             rotate();
         } else if (event.key === 's' || event.key === 'S') {
-            down();
+            down(movementPossibilities.bottom);
         }
 
     });

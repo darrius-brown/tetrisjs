@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     const Piece = class {
-        constructor(display, color, startingCoordinates) {
+        constructor(display, color, startingCoordinates, spawnPoint) {
             this.display = display
             this.color = color
             this.startingCoordinates = startingCoordinates
+            this.spawnPoint = spawnPoint
         }
     }
 
-    board = [
+    let board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const boardContainer = document.getElementById('board-container');
-    
+
     const colors = ['blue', 'yellow', 'red', 'green', 'orange', 'pink', 'purple']
     const renderBoard = () => {
         boardContainer.innerHTML = '';
@@ -59,19 +60,21 @@ document.addEventListener('DOMContentLoaded', function () {
     renderBoard();
 
     const i = new Piece([[0, -1, 0, 0],
-                        [0, -1, 0, 0],
-                        [0, -1, 0, 0],
-                        [0, -1, 0, 0]],
+    [0, -1, 0, 0],
+    [0, -1, 0, 0],
+    [0, -1, 0, 0]],
         'blue',
-        [3, -3]
+        [3, -3],
+        [[0, 4]]
     )
 
     const o = new Piece([[0, 0, 0, 0],
-                        [0, -2, -2, 0],
-                        [0, -2, -2, 0],
-                        [0, 0, 0, 0]],
+    [0, -2, -2, 0],
+    [0, -2, -2, 0],
+    [0, 0, 0, 0]],
         'yellow',
-        [3, -2]
+        [3, -2],
+        [[0, 4], [0, 5]]
     )
 
     const s = new Piece([[0, 0, 0, 0],
@@ -79,7 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -3, -3, 0],
     [0, 0, 0, 0]],
         'red',
-        [3, -2]
+        [3, -2],
+        [[0, 4], [0, 5]]
     )
 
     const z = new Piece([[0, 0, 0, 0],
@@ -87,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -4, -4],
     [0, 0, 0, 0]],
         'green',
-        [3, -2]
+        [3, -2],
+        [[0, 5], [0, 6]]
     )
 
     const l = new Piece([[0, -5, 0, 0],
@@ -95,7 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -5, -5, 0],
     [0, 0, 0, 0]],
         'orange',
-        [3, -2]
+        [3, -2],
+        [[0, 4], [0, 5]]
     )
 
     const j = new Piece([[0, 0, -6, 0],
@@ -103,15 +109,17 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -6, -6, 0],
     [0, 0, 0, 0]],
         'pink',
-        [3, -2]
+        [3, -2],
+        [[0, 4], [0, 5]]
     )
 
     const t = new Piece([[0, 0, 0, 0],
-                        [0, -7, -7, -7],
-                        [0, 0, -7, 0],
-                        [0, 0, 0, 0]],
+    [0, -7, -7, -7],
+    [0, 0, -7, 0],
+    [0, 0, 0, 0]],
         'purple',
-        [2, -2]
+        [2, -2],
+        [[0, 5]]
     )
 
     const pieces = [i, o, s, z, l, j, t]
@@ -123,24 +131,85 @@ document.addEventListener('DOMContentLoaded', function () {
     let coordinatesOfFragementsOnBoard = []
     let coordinatesAroundFragments
     let movementPossibilities = {}
+    let piecesUpNext = []
+
+    const startGame = () => {
+        createPiecesUpNext();
+        spawnPiece();
+    }
+
+    const reset = () => {
+        movementSpeed = 1000;
+        coordinatesOfFragementsOnBoard = [];
+        coordinatesAroundFragments = undefined; 
+        movementPossibilities = {};
+        piecesUpNext = [];
+        playPiece = undefined;
+        board = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+    };
+
+    const newGame = () => {
+        reset();
+        startGame();
+    };
+
+    const randomNumberGenerater = () => {
+        return Math.floor(Math.random() * pieces.length);
+    }
+
+    const checkIfSpawnPossible = () => {
+        if (coordinatesOfFragementsOnBoard.some(coord =>
+            pieces[piecesUpNext[0]].spawnPoint.some(spawnCoord =>
+                spawnCoord[0] === coord[0] && spawnCoord[1] === coord[1]
+            ))) {
+            newGame();
+        }
+    }
+
+    const createPiecesUpNext = () => {
+        while (piecesUpNext.length < 5) {
+            let randomNumber = randomNumberGenerater();
+            piecesUpNext.push(randomNumber);
+        }
+    }
 
     const spawnPiece = () => {
         movementPossibilities = {}
-        const randomNumberGenerater = () => {
-            return Math.floor(Math.random() * pieces.length)
-        }
-        let randomNumber = randomNumberGenerater()
         playPiece = {
-            display: pieces[randomNumber].display.slice(),
-            coordinates: pieces[randomNumber].startingCoordinates.slice() 
+            display: pieces[piecesUpNext[0]].display.slice(),
+            coordinates: pieces[piecesUpNext[0]].startingCoordinates.slice()
         },
-
             draw(playPiece, true, false)
-    }
+            let randomNumber = randomNumberGenerater()   
+            piecesUpNext.splice(0, 1)
+            piecesUpNext.push(randomNumber)
+        }
 
     const endPiece = () => {
         draw(playPiece, true, true);
         clearRows();
+        checkIfSpawnPossible();
         spawnPiece();
     }
 
@@ -148,8 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const boardPrep = () => {
             if (piece.coordinates[1] < 0) {
                 topOfBoard = Math.abs(piece.coordinates[1])
-                console.log('top of board increase')
-                console.log(topOfBoard)
             } else {
                 topOfBoard = 0
             }
@@ -182,16 +249,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                         }
                         if (bool === false) {
-                            console.log(piece.coordinates)                           
-                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0                             
+                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                         }
                     }
                 }
                 let isOnTopOfBoard = checkIfFragmentIsOnTopOFBoard()
-                    if (isOnTopOfBoard === true) {
-                        break outerloop;
-                    }
-            } 
+                if (isOnTopOfBoard === true) {
+                    break outerloop;
+                }
+            }
         }
 
         boardPrep()
@@ -200,8 +266,6 @@ document.addEventListener('DOMContentLoaded', function () {
             checkAroundFragments()
             checkMovementPossibilities()
             renderBoard()
-            console.log(coordinatesAroundFragments)
-            console.log(coordinatesOfFragementsOnBoard)
         }
     };
 
@@ -211,7 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
         draw(playPiece, false, false)
-        console.log('blank drawn')
         playPiece.coordinates[1] += 1
         draw(playPiece, true, false)
     }
@@ -284,32 +347,38 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = board.length - 1; i >= 0; i--) {
             let clearable = board[i].every(num => num > 0)
             if (clearable === true) {
-                board.splice(i, 1)   
-                board.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) 
+                board.splice(i, 1)
+                board.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
                 i++
             }
         }
     }
 
-    setInterval(() => {
-        down(movementPossibilities.bottom);
-    }, movementSpeed);
+    // setInterval(() => {
+    //     down(movementPossibilities.bottom);
+    // }, movementSpeed);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'a' || event.key === 'A') {
             left(movementPossibilities.left);
         } else if (event.key === 'd' || event.key === 'D') {
             right(movementPossibilities.right);
-        } else if (event.key === 'w' || event.key === 'W') {
+        } else if (event.code === 'Space') {
             fastDown();
             endPiece();
-        } else if (event.key === 'e' || event.key === 'E' || event.key === 'q' || event.key === 'Q') {
+        } else if (event.key === 'w' || event.key === 'W') {
             rotate();
         } else if (event.key === 's' || event.key === 'S') {
             down(movementPossibilities.bottom);
+        } else if (event.key === 'ArrowLeft') { // Arrow key left
+            left(movementPossibilities.left);
+        } else if (event.key === 'ArrowRight') { // Arrow key right
+            right(movementPossibilities.right);
+        } else if (event.key === 'ArrowDown') { // Arrow key down
+            down(movementPossibilities.bottom);
+        } else if (event.key === 'ArrowUp') { // Arrow key up
+            rotate();
         }
-
-    });
-    spawnPiece();
-
+    })
+    startGame();
 })

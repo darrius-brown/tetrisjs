@@ -286,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (clearable === true) {
                 board.splice(i, 1)   
                 board.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) 
+                i++
             }
         }
     }

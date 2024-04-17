@@ -184,6 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 spawnCoord[0] === coord[0] && spawnCoord[1] === coord[1]
             ))) {
             newGame();
+        } else {
+            spawnPiece();
         }
     }
 
@@ -210,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
         draw(playPiece, true, true);
         clearRows();
         checkIfSpawnPossible();
-        spawnPiece();
     }
 
     const draw = (piece, bool, endingPiece) => {
@@ -354,9 +355,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // setInterval(() => {
-    //     down(movementPossibilities.bottom);
-    // }, movementSpeed);
+    setInterval(() => {
+        down(movementPossibilities.bottom);
+    }, movementSpeed);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'a' || event.key === 'A') {

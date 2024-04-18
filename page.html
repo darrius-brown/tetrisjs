@@ -3,45 +3,39 @@
 <head>
     <style>
         /* Add some basic styling for the board display */
+
+        html, body {
+            margin: 0;
+            margin-bottom: 3%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: #2E0854;
+            padding-top: 7%;
+        }
+
         .cell {
             width: 30px;
             height: 30px;
             display: inline-block;
             border: 1px solid #000;
         }
-        .blue {
-    background-color: blue;
+
+        .board {
+            text-align: center;
         }
 
-        .yellow {
-            background-color: yellow;
-        }
-
-        .red {
-            background-color: red;
-        }
-
-        .green {
-            background-color: green;
-        }
-
-        .orange {
-            background-color: orange;
-        }
-
-        .pink {
-            background-color: pink;
-        }
-
-        .purple {
-            background-color: purple;
-        }
     </style>
 </head>
 <body>
-    <div id="board-container"></div>
+    <div class = 'board'id='board-container'></div>
+    <div class='next-piece' id='next-piece-container'></div>
 </body>
-<script src="revise.js"></script>
+<script src='revise.js'></script>
 </html>
 
 

@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const boardContainer = document.getElementById('board-container');
+    const nextPieceContainer = document.getElementById('next-piece-container');
+
 
     const colors = ['blue', 'yellow', 'red', 'green', 'orange', 'pink', 'purple']
     const renderBoard = () => {
@@ -46,9 +48,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 cell.className = 'cell';
                 cell.innerText = board[row][col];
                 cell.style.color = 'transparent'
-                cell.style.backgroundColor = 'black'
+                cell.style.userSelect = 'none'; 
+                cell.style.MozUserSelect = 'none'; 
+                cell.style.msUserSelect = 'none'; 
+                
                 if (board[row][col] !== 0) {
                     cell.style.backgroundColor = colors[(Math.abs(board[row][col]) - 1)];
+                } else {
+                    cell.style.backgroundColor = 'black'
+                }
+                if (board[row][col] !== 0) {
+                    cell.style.backgroundColor = 'none'
+                } else {
+                    cell.style.borderColor = '#333333'
                 }
                 rowElement.appendChild(cell);
             }
@@ -57,7 +69,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    renderBoard();
+    const renderNextPieces = (nextPieces) => {
+        nextPieceContainer.innerHTML = ''; 
+        
+        for (let i = 0; i < nextPieces.length; i++) {
+            const nextPieceElement = document.createElement('div');
+            nextPieceElement.innerText = nextPieces[i];
+            nextPieceContainer.appendChild(nextPieceElement);
+        }
+    };
 
     const i = new Piece([[0, -1, 0, 0],
     [0, -1, 0, 0],
@@ -264,9 +284,10 @@ document.addEventListener('DOMContentLoaded', function () {
         boardPrep()
 
         if (bool === true) {
-            checkAroundFragments()
-            checkMovementPossibilities()
-            renderBoard()
+            checkAroundFragments();
+            checkMovementPossibilities();
+            renderBoard();
+            renderNextPieces(piecesUpNext)
         }
     };
 

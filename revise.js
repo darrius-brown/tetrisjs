@@ -70,14 +70,36 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const renderNextPieces = (nextPieces) => {
-        nextPieceContainer.innerHTML = ''; 
+        nextPieceContainer.innerHTML = ''; // Clear previous content
         
         for (let i = 0; i < nextPieces.length; i++) {
             const nextPieceElement = document.createElement('div');
-            nextPieceElement.innerText = nextPieces[i];
+            nextPieceElement.className = 'next-piece';
+            
+            for (let row = 0; row < pieces[nextPieces[i]].display.length; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'next-piece-row';
+                
+                for (let col = 0; col < pieces[nextPieces[i]].display[row].length; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'next-piece-cell';
+                    cell.innerText = pieces[nextPieces[i]].display[row][col];
+                    cell.style.color = 'white'
+                    rowElement.appendChild(cell);
+                    if (parseInt(cell.innerText) != 0) {
+                        cell.style.backgroundColor = colors[(Math.abs(parseInt(cell.innerText)) - 1)];
+                    } else {
+                        cell.style.backgroundColor = 'black'
+                    }
+                }
+                
+                nextPieceElement.appendChild(rowElement);
+            }
+            
             nextPieceContainer.appendChild(nextPieceElement);
         }
     };
+    
 
     const i = new Piece([[0, -1, 0, 0],
     [0, -1, 0, 0],

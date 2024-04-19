@@ -81,15 +81,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 rowElement.className = 'next-piece-row';
                 
                 for (let col = 0; col < pieces[nextPieces[i]].display[row].length; col++) {
+                    const displayRow = col;
+                    const displayCol = pieces[nextPieces[i]].display[row].length - row - 1;
+                
                     const cell = document.createElement('div');
                     cell.className = 'next-piece-cell';
-                    cell.innerText = pieces[nextPieces[i]].display[row][col];
-                    cell.style.color = 'white'
+                    cell.innerText = pieces[nextPieces[i]].display[displayRow][displayCol];
+                    cell.style.color = 'transparent'
+                    cell.style.userSelect = 'none'; 
+                    cell.style.MozUserSelect = 'none'; 
+                    cell.style.msUserSelect = 'none'; 
+                    cell.style.borderColor = 'black'
                     rowElement.appendChild(cell);
-                    if (parseInt(cell.innerText) != 0) {
-                        cell.style.backgroundColor = colors[(Math.abs(parseInt(cell.innerText)) - 1)];
+                
+                    if (parseInt(cell.innerText) !== 0) {
+                        cell.style.backgroundColor = colors[Math.abs(parseInt(cell.innerText)) - 1];
                     } else {
-                        cell.style.backgroundColor = 'black'
+                        cell.style.backgroundColor = 'black';
                     }
                 }
                 

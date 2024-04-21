@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -1, 0, 0],
     [0, -1, 0, 0]],
         'blue',
-        [3, -3],
+        [3, 0],
         [[0, 4]]
     )
 
@@ -123,16 +123,16 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -2, -2, 0],
     [0, 0, 0, 0]],
         'yellow',
-        [3, -2],
+        [3, -1],
         [[0, 4], [0, 5]]
     )
 
     const s = new Piece([[0, 0, 0, 0],
-    [0, 0, -3, -3],
-    [0, -3, -3, 0],
-    [0, 0, 0, 0]],
+                        [0, 0, -3, -3],
+                        [0, -3, -3, 0],
+                        [0, 0, 0, 0]],
         'red',
-        [3, -2],
+        [3, -1],
         [[0, 4], [0, 5]]
     )
 
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -4, -4],
     [0, 0, 0, 0]],
         'green',
-        [3, -2],
+        [3, -1],
         [[0, 5], [0, 6]]
     )
 
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -5, -5, 0],
     [0, 0, 0, 0]],
         'orange',
-        [3, -2],
+        [3, 0],
         [[0, 4], [0, 5]]
     )
 
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -6, -6, 0],
     [0, 0, 0, 0]],
         'pink',
-        [3, -2],
+        [3, 0],
         [[0, 4], [0, 5]]
     )
 
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, -7, 0],
     [0, 0, 0, 0]],
         'purple',
-        [2, -2],
+        [2, -1],
         [[0, 5]]
     )
 
@@ -264,56 +264,39 @@ document.addEventListener('DOMContentLoaded', function () {
         checkIfSpawnPossible();
     }
 
-    const draw = (piece, bool, endingPiece) => {
-        const boardPrep = () => {
-            if (piece.coordinates[1] < 0) {
-                topOfBoard = Math.abs(piece.coordinates[1])
-            } else {
-                topOfBoard = 0
-            }
+    const draw = (piece, notBlank, endingPiece) => {
             coordinatesOfFragementsOnBoard = []
-            outerloop: for (let i = piece.display.length - 1; i >= topOfBoard; i--) {
+            for (let i = piece.display.length - 1; i >= 0; i--) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
                         if (piece.coordinates[0] + j > rightEdgeOfBoard) {
                             for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
                                 board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
                             }
-                            piece.coordinates[0] -= 1
-                            boardPrep();
-                            break outerloop;
+                            piece.coordinates[0] -= 1                        
                         }
                         if (piece.coordinates[0] + j < leftEdgeOfBoard) {
                             for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
                                 board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
                             }
                             piece.coordinates[0] += 1
-                            boardPrep();
-                            break outerloop;
                         }
                         if (endingPiece === true) {
                             board[piece.coordinates[1] + i][piece.coordinates[0] + j] = Math.abs(piece.display[i][j])
                         } else {
                             board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
                         }
-                        if (bool === true) {
+                        if (notBlank === true) {
                             coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                         }
-                        if (bool === false) {
+                        if (notBlank === false) {
                             board[piece.coordinates[1] + i][piece.coordinates[0] + j] = 0
                         }
                     }
-                }
-                let isOnTopOfBoard = checkIfFragmentIsOnTopOFBoard()
-                if (isOnTopOfBoard === true) {
-                    break outerloop;
-                }
+                }   
             }
-        }
-
-        boardPrep()
-
-        if (bool === true) {
+        if (notBlank === true) {
+            console.log(coordinatesOfFragementsOnBoard)
             checkAroundFragments();
             checkMovementPossibilities();
             renderBoard();
@@ -406,9 +389,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    setInterval(() => {
-        down(movementPossibilities.bottom);
-    }, movementSpeed);
+    // setInterval(() => {
+    //     down(movementPossibilities.bottom);
+    // }, movementSpeed);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'a' || event.key === 'A') {

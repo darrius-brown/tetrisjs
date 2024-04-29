@@ -452,76 +452,77 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const boardContainer = document.getElementById('board-container');
+    const nextPieceContainer = document.getElementById('next-piece-container');
+
 
     const colors = ['blue', 'yellow', 'red', 'green', 'orange', 'pink', 'purple']
     const renderBoard = () => {
-                boardContainer.innerHTML = '';
-        
-                for (let row = 0; row < board.length; row++) {
-                    const rowElement = document.createElement('div');
-                    rowElement.className = 'row';
-        
-                    for (let col = 0; col < board[row].length; col++) {
-                        const cell = document.createElement('div');
-                        cell.className = 'cell';
-                        cell.innerText = board[row][col];
-                        cell.style.color = 'transparent'
-                        cell.style.userSelect = 'none'; 
-                        cell.style.MozUserSelect = 'none'; 
-                        cell.style.msUserSelect = 'none'; 
-        
-                        if (board[row][col] !== 0) {
-                            cell.style.backgroundColor = colors[(Math.abs(board[row][col]) - 1)];
-                        } else {
-                            cell.style.backgroundColor = 'black'
-                        }
-                        if (board[row][col] !== 0) {
-                            cell.style.backgroundColor = 'none'
-                        } else {
-                            cell.style.borderColor = '#333333'
-                        }
-                        rowElement.appendChild(cell);
-                    }
-        
-                    boardContainer.appendChild(rowElement);
+        boardContainer.innerHTML = '';
+
+        for (let row = 0; row < board.length; row++) {
+            const rowElement = document.createElement('div');
+            rowElement.className = 'row';
+
+            for (let col = 0; col < board[row].length; col++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = board[row][col];
+                cell.style.color = 'transparent'
+                cell.style.userSelect = 'none';
+                cell.style.MozUserSelect = 'none';
+                cell.style.msUserSelect = 'none';
+
+                if (board[row][col] !== 0) {
+                    cell.style.backgroundColor = colors[(Math.abs(board[row][col]) - 1)];
+                } else {
+                    cell.style.backgroundColor = 'black'
                 }
-            };
+                if (board[row][col] !== 0) {
+                    cell.style.backgroundColor = 'none'
+                } else {
+                    cell.style.borderColor = '#333333'
+                }
+                rowElement.appendChild(cell);
+            }
+
+            boardContainer.appendChild(rowElement);
+        }
+    };
 
     const renderNextPieces = (nextPieces) => {
-        nextPieceContainer.innerHTML = ''; // Clear previous content
-
+        nextPieceContainer.innerHTML = '';
+    
         for (let i = 0; i < nextPieces.length; i++) {
             const nextPieceElement = document.createElement('div');
             nextPieceElement.className = 'next-piece';
-
+    
             for (let row = 0; row < pieces[nextPieces[i]].display.length; row++) {
                 const rowElement = document.createElement('div');
                 rowElement.className = 'next-piece-row';
-
+    
                 for (let col = 0; col < pieces[nextPieces[i]].display[row].length; col++) {
-                    const displayRow = col;
-                    const displayCol = pieces[nextPieces[i]].display[row].length - row - 1;
-
+                    const displayRow = row;
+                    const displayCol = col;
                     const cell = document.createElement('div');
                     cell.className = 'next-piece-cell';
-                    cell.innerText = pieces[nextPieces[i]].display[displayRow][displayCol];
-                    cell.style.color = 'transparent'
+                    cell.innerText = pieces[nextPieces[i]].display[displayCol][displayRow];
+                    cell.style.color = 'transparent';
                     cell.style.userSelect = 'none';
                     cell.style.MozUserSelect = 'none';
                     cell.style.msUserSelect = 'none';
-                    cell.style.borderColor = 'black'
+                    cell.style.borderColor = 'black';
                     rowElement.appendChild(cell);
-
+    
                     if (parseInt(cell.innerText) !== 0) {
                         cell.style.backgroundColor = colors[Math.abs(parseInt(cell.innerText)) - 1];
                     } else {
                         cell.style.backgroundColor = 'black';
                     }
                 }
-
+    
                 nextPieceElement.appendChild(rowElement);
             }
-
+    
             nextPieceContainer.appendChild(nextPieceElement);
         }
     };
@@ -837,13 +838,13 @@ document.addEventListener('DOMContentLoaded', function () {
             rotate();
         } else if (event.key === 's' || event.key === 'S') {
             down(movementPossibilities.bottom);
-        } else if (event.key === 'ArrowLeft') { // Arrow key left
+        } else if (event.key === 'ArrowLeft') { 
             left(movementPossibilities.left);
-        } else if (event.key === 'ArrowRight') { // Arrow key right
+        } else if (event.key === 'ArrowRight') { 
             right(movementPossibilities.right);
-        } else if (event.key === 'ArrowDown') { // Arrow key down
+        } else if (event.key === 'ArrowDown') { 
             down(movementPossibilities.bottom);
-        } else if (event.key === 'ArrowUp') { // Arrow key up
+        } else if (event.key === 'ArrowUp') { 
             rotate();
         }
     })

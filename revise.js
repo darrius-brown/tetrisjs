@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const Piece = class {
-        constructor(display, color, startingCoordinates, spawnPoint) {
+        constructor(display, color, startingCoordinates, spawnPoint, value) {
             this.display = display
             this.color = color
             this.startingCoordinates = startingCoordinates
             this.spawnPoint = spawnPoint
+            this.value = value
         }
     }
 
@@ -37,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const boardContainer = document.getElementById('board-container');
     const nextPieceContainer = document.getElementById('next-piece-container');
-
 
     const colors = ['blue', 'yellow', 'red', 'green', 'orange', 'pink', 'purple']
     const renderBoard = () => {
@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, -1, 0, 0]],
         'blue',
         [3, 0],
-        [[0, 4]]
+        [[0, 4]],
+        -1
     )
 
     const o = new Piece([[0, 0, 0, 0],
@@ -128,7 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'yellow',
         [3, 0],
-        [[0, 4], [0, 5]]
+        [[0, 4], [0, 5]],
+        -2
     )
 
     const s = new Piece([[0, 0, 0, 0],
@@ -137,7 +139,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'red',
         [3, 0],
-        [[0, 4], [0, 5]]
+        [[0, 4], [0, 5]],
+        -3
     )
 
     const z = new Piece([[0, 0, 0, 0],
@@ -146,7 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'green',
         [3, 0],
-        [[0, 5], [0, 6]]
+        [[0, 5], [0, 6]],
+        -4
     )
 
     const l = new Piece([[0, -5, 0, 0],
@@ -155,7 +159,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'orange',
         [3, 0],
-        [[0, 4], [0, 5]]
+        [[0, 4], [0, 5]],
+        -5
     )
 
     const j = new Piece([[0, 0, -6, 0],
@@ -164,7 +169,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'pink',
         [3, 0],
-        [[0, 4], [0, 5]]
+        [[0, 4], [0, 5]],
+        -6
     )
 
     const t = new Piece([[0, 0, 0, 0],
@@ -173,7 +179,8 @@ document.addEventListener('DOMContentLoaded', function () {
     [0, 0, 0, 0]],
         'purple',
         [2, 0],
-        [[0, 5]]
+        [[0, 5]],
+        -7
     )
 
     const pieces = [i, o, s, z, l, j, t]
@@ -233,16 +240,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.floor(Math.random() * pieces.length);
     }
 
-    const checkIfSpawnPossible = () => {
-        if (coordinatesOfFragementsOnBoard.some(coord =>
-            pieces[piecesUpNext[0]].spawnPoint.some(spawnCoord =>
-                spawnCoord[0] === coord[0] && spawnCoord[1] === coord[1]
-            ))) {
-            newGame();
-        } else {
-            spawnPiece();
-        }
-    }
+    // const checkIfSpawnPossible = () => {
+    //     if (coordinatesOfFragementsOnBoard.some(coord =>
+    //         pieces[piecesUpNext[0]].spawnPoint.some(spawnCoord =>
+    //             spawnCoord[0] === coord[0] && spawnCoord[1] === coord[1]
+    //         ))) {
+    //         newGame();
+    //     } else {
+    //         spawnPiece();
+    //     }
+    // }
 
     const createPiecesUpNext = () => {
         while (piecesUpNext.length < 5) {
@@ -256,7 +263,8 @@ document.addEventListener('DOMContentLoaded', function () {
         coordinatesOfFragementsOnBoard = []
         playPiece = {
             display: pieces[piecesUpNext[0]].display.slice(),
-            coordinates: pieces[piecesUpNext[0]].startingCoordinates.slice()
+            coordinates: pieces[piecesUpNext[0]].startingCoordinates.slice(),
+            value: pieces[piecesUpNext[0]].value
         },
             draw(playPiece);
         let randomNumber = randomNumberGenerater()
@@ -269,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
             board[y][x] = Math.abs(board[y][x])
         });
         clearRows();
-        checkIfSpawnPossible();
+        spawnPiece();
     }
 
     const clearPiece = () => {
@@ -283,40 +291,52 @@ document.addEventListener('DOMContentLoaded', function () {
         renderBoard();
     }
 
+    const checkIfPieceIsOverlaps = () => {
+        rightHighest = 0
+        leftLowest = 0
+        for (let i = 0; i < coordinatesOfFragementsOnBoard.length; i++) {
+            if (coordinatesOfFragementsOnBoard[i][1] - rightEdgeOfBoard > rightHighest) {
+                rightHighest = coordinatesOfFragementsOnBoard[i][1] - rightEdgeOfBoard
+            };  
+        }
+
+        for (let i = 0; i < coordinatesOfFragementsOnBoard.length; i++) {
+            console.log(leftLowest)
+            if (coordinatesOfFragementsOnBoard[i][1] + leftEdgeOfBoard < leftLowest) {
+                leftLowest = coordinatesOfFragementsOnBoard[i][1] + leftEdgeOfBoard
+            };
+        }
+
+        if (rightHighest > 0) {
+            playPiece.coordinates[0] -= rightHighest 
+            coordinatesOfFragementsOnBoard = coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x  - rightHighest]);
+        }
+
+        if (leftLowest < 0) {
+            playPiece.coordinates[0] -= leftLowest 
+            coordinatesOfFragementsOnBoard = coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x  - leftLowest]);
+        }
+    }
+    
 
 
     const draw = (piece) => {
         clearPiece();
         const boardPrep = () => {
             coordinatesOfFragementsOnBoard = []
-            outerloop: for (let i = piece.display.length - 1; i >= topOfBoard; i--) {
+            for (let i = piece.display.length - 1; i >= topOfBoard; i--) {
                 for (let j = 0; j < piece.display[i].length; j++) {
                     if (piece.display[i][j] < 0) {
-                        if (piece.coordinates[0] + j > rightEdgeOfBoard) {
-                            for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
-                                board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
-                            }
-                            piece.coordinates[0] -= 1
-                            boardPrep();
-                            break outerloop;
-                        }
-                        if (piece.coordinates[0] + j < leftEdgeOfBoard) {
-                            for (let k = 0; k < coordinatesOfFragementsOnBoard.length; k++) {
-                                board[coordinatesOfFragementsOnBoard[0][0]][coordinatesOfFragementsOnBoard[0][1]] = 0
-                            }
-                            piece.coordinates[0] += 1
-                            boardPrep();
-                            break outerloop;
-                        }
-                        
-                            board[piece.coordinates[1] + i][piece.coordinates[0] + j] = piece.display[i][j]
-                        
                         coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
-                    }
-                }
+                    };
+                };
+                checkIfPieceIsOverlaps();                
+                coordinatesOfFragementsOnBoard.forEach(([y, x]) => {
+                    board[y][x] = playPiece.value
+                });
             }
         }
-
+        
         boardPrep();
         checkAroundFragments();
         checkMovementPossibilities();
@@ -350,9 +370,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const left = (canExecute) => {
         if (!canExecute) {
-            return
+            return;
         }
-   
+
         playPiece.coordinates[0] -= 1
         draw(playPiece);
     }

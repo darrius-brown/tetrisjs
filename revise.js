@@ -185,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const pieces = [i, o, s, z, l, j, t]
     let movementSpeed = 1000
+    let rotateCount = 0
     let topOfBoard = 0
     let rightEdgeOfBoard = board[0].length - 1
     let leftEdgeOfBoard = 0
@@ -261,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const spawnPiece = () => {
         movementPossibilities = {}
         coordinatesOfFragementsOnBoard = []
+        rotateCount = 0
         playPiece = {
             display: pieces[piecesUpNext[0]].display.slice(),
             coordinates: pieces[piecesUpNext[0]].startingCoordinates.slice(),
@@ -301,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         for (let i = 0; i < coordinatesOfFragementsOnBoard.length; i++) {
-            console.log(leftLowest)
             if (coordinatesOfFragementsOnBoard[i][1] + leftEdgeOfBoard < leftLowest) {
                 leftLowest = coordinatesOfFragementsOnBoard[i][1] + leftEdgeOfBoard
             };
@@ -330,7 +331,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                     };
                 };
-                checkIfPieceIsOverlaps();                
+                checkIfPieceIsOverlaps();  
+                console.log(playPiece.coordinates)             
                 coordinatesOfFragementsOnBoard.forEach(([y, x]) => {
                     board[y][x] = playPiece.value
                 });
@@ -347,7 +349,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const down = (canExecute) => {
         if (!canExecute) {
             endPiece();
-            console.log("piece ended")
             return
         }
         playPiece.coordinates[1] += 1
@@ -378,9 +379,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const rotate = () => {
+        // rotateCount++
+        // if (rotateCount % 2 && rotateCount !== 4) {
+        //     playPiece.coordinates[0] -= 1
+        // }
+
+        // if (rotateCount % 2 && rotateCount === 4) {
+        //     playPiece.coordinates[0] += 1
+        //     rotateCount = 0
+        // }
+
         let transposedPiece = playPiece.display[0].map((_, colIndex) => playPiece.display.map(row => row[colIndex]));
         let rotatedPiece = transposedPiece.map(row => row.reverse());
         playPiece.display = rotatedPiece;
+        // console.log(playPiece.coordinates)
         draw(playPiece);
     }
 

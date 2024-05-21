@@ -317,11 +317,13 @@ document.addEventListener('DOMContentLoaded', function () {
             playPiece.coordinates[0] -= leftLowest 
             coordinatesOfFragementsOnBoard = coordinatesOfFragementsOnBoard.map(([y, x]) => [y, x  - leftLowest]);
         }
+        
     }
     
 
 
     const draw = (piece) => {
+        console.log(coordinatesOfFragementsOnBoard)
         clearPiece();
         const boardPrep = () => {
             coordinatesOfFragementsOnBoard = []
@@ -331,14 +333,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         coordinatesOfFragementsOnBoard.push([piece.coordinates[1] + i, piece.coordinates[0] + j])
                     };
                 };
-                checkIfPieceIsOverlaps();  
-                console.log(playPiece.coordinates)             
+                
+            }
+            checkIfPieceIsOverlaps();  
+                console.log(coordinatesOfFragementsOnBoard)
                 coordinatesOfFragementsOnBoard.forEach(([y, x]) => {
                     board[y][x] = playPiece.value
                 });
-            }
         }
-        
         boardPrep();
         checkAroundFragments();
         checkMovementPossibilities();
@@ -379,20 +381,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const rotate = () => {
-        // rotateCount++
-        // if (rotateCount % 2 && rotateCount !== 4) {
-        //     playPiece.coordinates[0] -= 1
-        // }
-
-        // if (rotateCount % 2 && rotateCount === 4) {
-        //     playPiece.coordinates[0] += 1
-        //     rotateCount = 0
-        // }
-
+        console.log(coordinatesOfFragementsOnBoard)
         let transposedPiece = playPiece.display[0].map((_, colIndex) => playPiece.display.map(row => row[colIndex]));
         let rotatedPiece = transposedPiece.map(row => row.reverse());
         playPiece.display = rotatedPiece;
-        // console.log(playPiece.coordinates)
         draw(playPiece);
     }
 
